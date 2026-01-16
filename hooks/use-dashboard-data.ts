@@ -1,0 +1,50 @@
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
+import api from "@/lib/api";
+import { DateRange } from "react-day-picker";
+import { format } from "date-fns";
+import { DashboardSummary, ChannelData } from "@/types/dashboard";
+
+interface UseDashboardProps {
+  dateRange?: DateRange;
+}
+
+export function useDashboardData({ dateRange }: UseDashboardProps) {
+  // Helper to format dates for API (assuming API takes YYYY-MM-DD)
+  const queryParams = {
+    startDate: dateRange?.from ? format(dateRange.from, "yyyy-MM-dd") : undefined,
+    endDate: dateRange?.to ? format(dateRange.to, "yyyy-MM-dd") : undefined,
+  };
+
+  const summaryQuery = useQuery({
+    queryKey: ["dashboard", "summary", queryParams],
+    queryFn: async () => {
+      const { data } = await api.get<DashboardSummary>("/dashboard/summary", {
+        params: queryParams,
+      });
+      return data;
+    },
+  });
+
+  const channelsQuery = useQuery({
+    queryKey: ["dashboard", "channels", queryParams],
+    queryFn: async () => {
+      const { data } = await api.get<ChannelData[]>("/dashboard/channels", {
+        params: queryParams,
+      });
+      return data;
+    },
+  });
+
+  return {
+    summary: summaryQuery.data,
+    channels: channelsQuery.data,
+    isLoading: summaryQuery.isLoading || channelsQuery.isLoading,
+    isError: summaryQuery.isError || channelsQuery.isError,
+    refetch: () => {
+      summaryQuery.refetch();
+      channelsQuery.refetch();
+    },
+  };
+}

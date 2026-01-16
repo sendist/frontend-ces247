@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { DashboardSummary } from "@/types/dashboard";
 
 const priorityData = [
   { label: "Roaming", value: 28, color: "bg-red-600" },
@@ -10,21 +11,40 @@ const priorityData = [
   { label: "Urgent", value: 9, color: "bg-red-600" },
 ];
 
-export function LeftColumn() {
+interface LeftColumnProps {
+  summary?: DashboardSummary;
+}
+
+export function LeftColumn({ summary }: LeftColumnProps) {
+
+  if (!summary) {
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="animate-pulse bg-slate-800 h-48 rounded-xl border border-slate-700" />
+        <div className="animate-pulse bg-slate-800 h-64 rounded-xl border border-slate-700" />
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col gap-4">
       <Card className="bg-red-900/20 border-red-900/50 text-center">
         <CardHeader className="pb-2">
-          <CardTitle className="text-5xl font-bold text-red-500">169</CardTitle>
+          <CardTitle className="text-2xl font-bold text-red-500">
+            {summary.totalTickets.toLocaleString()}
+          </CardTitle>
           <p className="text-sm font-medium text-slate-300">Total Tickets</p>
         </CardHeader>
         <CardContent className="grid grid-cols-2 gap-4 pt-4 border-t border-red-900/50">
           <div>
-            <div className="text-3xl font-bold text-red-500">69</div>
+            <div className="text-lg font-bold text-red-500">
+              {summary.totalOpen.toLocaleString()}
+            </div>
             <p className="text-xs text-slate-400">Open</p>
           </div>
           <div>
-            <div className="text-3xl font-bold text-green-500">100</div>
+            <div className="text-lg font-bold text-green-500">
+              {summary.totalClosed.toLocaleString()}
+            </div>
             <p className="text-xs text-slate-400">Closed</p>
           </div>
         </CardContent>

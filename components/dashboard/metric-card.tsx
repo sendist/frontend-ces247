@@ -22,7 +22,7 @@ export function MetricCard({
 }: MetricCardProps) {
   return (
     <Card className={cn("bg-slate-800 border-slate-700", className)}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 -m-2">
         <CardTitle className="text-sm font-medium text-slate-300">
           {title}
         </CardTitle>

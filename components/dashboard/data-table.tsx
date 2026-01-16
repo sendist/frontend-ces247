@@ -16,13 +16,13 @@ interface DataTableProps {
 
 export function DataTable({ title, data, columns }: DataTableProps) {
   return (
-    <Card className="bg-slate-800 border-slate-700 mt-4">
-      <CardHeader className="pb-0">
+    <Card className="bg-slate-800 border-slate-700 mt-2">
+      <CardHeader className="pb-0 -mt-4 -mb-2 -ml-2">
         <CardTitle className="text-sm font-medium text-white">
           {title}
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-0">
+      <CardContent className="p-0 -mt-4">
         <Table>
           <TableHeader className="bg-slate-900/50">
             <TableRow className="border-slate-700 hover:bg-slate-900/50">

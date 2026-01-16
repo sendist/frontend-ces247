@@ -36,7 +36,7 @@ export function Sidebar() {
 
   // Logout Mutation
   const logoutMutation = useMutation({
-    mutationFn: async () => api.post("/auth/logout"),
+    mutationFn: async () => api.post("api/auth/logout"),
     onSuccess: () => {
       // Clear all cache to remove user data
       queryClient.clear(); 
@@ -53,36 +53,6 @@ export function Sidebar() {
       icon: LayoutDashboard,
       roles: ["USER", "ADMIN"],
     },
-    {
-      title: "My Posts",
-      href: "/my-posts",
-      icon: List,
-      roles: ["USER"],
-    },
-    {
-      title: "Create Post",
-      href: "/my-posts/create",
-      icon: PlusCircle,
-      roles: ["USER"],
-    },
-    {
-      title: "Manage Users",
-      href: "/admin/users",
-      icon: Users,
-      roles: ["ADMIN"],
-    },
-    {
-      title: "Manage All Posts",
-      href: "/admin/posts",
-      icon: FileText,
-      roles: ["ADMIN"],
-    },
-    {
-      title: "feed",
-      href: "/feed",
-      icon: Newspaper,
-      roles: ["USER"],
-    },
   ];
 
   const toggleSidebar = () => {
@@ -94,7 +64,7 @@ export function Sidebar() {
       <div 
         className={cn(
           "relative flex h-screen flex-col justify-between border-r bg-gray-50/40 p-4 dark:bg-gray-900/40 transition-all duration-300 ease-in-out",
-          isCollapsed ? "w-16" : "w-64"
+          isCollapsed ? "w-16" : "w-48"
         )}
       >
         {/* Collapse Toggle Button */}
