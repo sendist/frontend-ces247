@@ -1,0 +1,178 @@
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Building2, IdCardLanyard } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+// --- Types for Data Props ---
+interface CorporateItem {
+  nama_perusahaan: string;
+  total: number;
+}
+
+interface IssueItem {
+  label: string;
+  inSla: number;
+  outSla: number;
+}
+
+interface P1CorporateCardProps {
+    isVip?: boolean;
+  overSlaCount?: number;
+  openCount?: number;
+  topCorporates?: CorporateItem[];
+  topIssues?: IssueItem[];
+}
+
+// --- Default Data Matching the Image ---
+const DEFAULT_CORPORATES: CorporateItem[] = [
+  { nama_perusahaan: "PT. PERTAMINA (PERSERO )", total: 27 },
+  { nama_perusahaan: "BANK PERMATA", total: 21 },
+  { nama_perusahaan: "PT SUMBER ALFARIA TRIJAYA TBK", total: 12 },
+  { nama_perusahaan: "SAYAP MAS UTAMA", total: 9 },
+  { nama_perusahaan: "PT. LOTTE SHOPPING INDONESIA", total: 6 },
+  { nama_perusahaan: "ORICA MINING SERVICES", total: 5 },
+  { nama_perusahaan: "PT AIA FINANCIAL", total: 5 },
+  { nama_perusahaan: "PT BANK MEGA TBK", total: 5 },
+  { nama_perusahaan: "PT PEGADAIAN ( PERSERO )", total: 4 },
+  { nama_perusahaan: "PT. EKA BOGAIINTI", total: 4 },
+];
+
+const DEFAULT_ISSUES: IssueItem[] = [
+  { label: "Kendala sinyal Lemah", inSla: 1, outSla: 15 },
+  { label: "Kendala tagihan", inSla: 0, outSla: 4 },
+  { label: "Pasang baru", inSla: 1, outSla: 3 },
+  { label: "Permintaan Network Event", inSla: 0, outSla: 4 },
+  { label: "Aktivasi kartu SIM", inSla: 1, outSla: 2 },
+  { label: "Coverage Network 2G/4G", inSla: 2, outSla: 1 },
+  { label: "Permintaan aktivasi paket", inSla: 0, outSla: 2 },
+  { label: "Berhenti Berlangganan atau Terminasi", inSla: 1, outSla: 1 },
+  { label: "Ganti kartu Hilang", inSla: 0, outSla: 2 },
+  { label: "Informasi status nomor", inSla: 0, outSla: 2 },
+];
+
+export function CorporateCard({
+    isVip = false,
+  overSlaCount = 14,
+  openCount = 21,
+  topCorporates = DEFAULT_CORPORATES,
+  topIssues = DEFAULT_ISSUES,
+}: P1CorporateCardProps) {
+
+  // Helper for the colored stat boxes (Blue >6H, Red Open)
+  const StatBadge = ({ label, value, color }: { label: string; value: number; color: "blue" | "red" }) => (
+    <div className={cn(
+      "flex flex-col items-center justify-center rounded-md border text-white w-14 h-8 shadow-sm",
+      color === "blue" ? "bg-[#0B1750] border-[#060d30]" : "bg-[#C20000] border-[#8a0000]"
+    )}>
+      <span className="text-[10px] font-semibold leading-none mb-0.5">{label}</span>
+      <span className="text-xs font-bold leading-none">{value}</span>
+    </div>
+  );
+
+  return (
+    <Card className="w-full max-w-4xl border-none bg-gray-50/50 shadow-sm p-1">
+      {/* Header Section */}
+      <CardHeader className="flex flex-row items-start justify-between pt-2 px-4">
+        <div className="flex flex-col gap-3">
+          {/* Title Area */}
+          <div className="flex items-center gap-2">
+            {isVip ? (<IdCardLanyard className="h-6 w-6 text-orange-600" />) : (<Building2 className="h-6 w-6 text-sky-600" />)}
+            <CardTitle className="text-sm font-medium text-slate-800">
+              {isVip ? "VIP Corporate" : "P1 Corporate & Others"}
+            </CardTitle>
+          </div>
+          
+          {/* Top Stats Row (>6H, Open) */}
+          <div className="flex gap-2">
+            <StatBadge label=">6H" value={overSlaCount} color="blue" />
+            <StatBadge label="Open" value={openCount} color="red" />
+          </div>
+        </div>
+
+        {/* Account Dropdown */}
+
+      </CardHeader>
+
+      <CardContent className="px-4 pb-2 -mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+          
+          {/* LEFT COLUMN: Top 10 Corp Open */}
+          <div className="md:col-span-5 flex flex-col gap-3">
+            {/* Header Pill */}
+            <div className="rounded-full bg-slate-500/80 py-1 px-4 text-center text-xs font-bold text-white shadow-sm">
+              Top 10 Corp Open
+            </div>
+            {/* List */}
+            <div className="flex flex-col text-[6pt] font-medium text-slate-800">
+              {topCorporates.map((corp, index) => (
+                <div key={index} className="flex justify-between items-center pb-1">
+                  <span className="truncate pr-2">{corp.nama_perusahaan}</span>
+                  <span className="font-bold">{corp.total}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* RIGHT COLUMN: Issues Breakdown */}
+          <div className="md:col-span-7 flex flex-col gap-2">
+            
+            {/* Legend */}
+            <div className="flex items-center gap-4 text-[10px] font-bold text-slate-600 mb-2">
+              <div className="flex items-center gap-1">
+                <div className="h-2 w-2 bg-[#0B1750]" />
+                <span>IN SLA</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="h-2 w-2 bg-[#C20000]" />
+                <span>Out of SLA</span>
+              </div>
+            </div>
+
+            {/* Chart List */}
+            <div className="flex flex-col">
+              {topIssues.map((issue, index) => (
+                <div key={index} className="flex items-center justify-end gap-2 text-[6pt]">
+                  {/* Label */}
+                  <span className="text-right text-slate-900 truncate flex-1">
+                    {issue.label}
+                  </span>
+
+                  {/* Bars Container */}
+                  <div className="flex items-center gap-1 min-w-[60px] justify-end">
+                    {/* Blue Box (In SLA) - Only show if > 0 */}
+                    {issue.inSla > 0 && (
+                      <div className="flex h-4 items-center justify-center rounded-sm bg-[#0B1750] px-2 text-[8px] font-bold text-white shadow-sm min-w-[20px]">
+                        {issue.inSla}
+                      </div>
+                    )}
+                    
+                    {/* Red Box (Out SLA) - Only show if > 0 OR if it's the only value? usually > 0 */}
+                    {issue.outSla > 0 && (
+                      <div 
+                        className="flex h-4 items-center justify-center rounded-sm bg-[#C20000] px-2 text-[8px] font-bold text-white shadow-sm min-w-[20px]"
+                        // Use width to visually simulate the bar length if desired, 
+                        // but the image shows them mostly as boxes containing numbers.
+                        // We can add a style to grow it slightly based on value if needed.
+                        style={{ width: issue.outSla > 9 ? 'auto' : undefined }}
+                      >
+                        {issue.outSla}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}

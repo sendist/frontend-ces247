@@ -34,3 +34,25 @@ export interface DashboardResponse {
   summary: DashboardSummary;
   channels: ChannelData[];
 }
+
+export interface Stats {
+  openTickets: number;
+  over3h: number;
+}
+
+export interface TopCorp {
+  nama_perusahaan: string;
+  total: number;
+}
+
+export interface CategoryData {
+  stats: Stats;
+  topCorps: TopCorp[];
+}
+
+
+export interface CorporateDetailResponse {
+  vip: CategoryData;
+  pareto: CategoryData;
+}
+
