@@ -56,3 +56,36 @@ export interface CorporateDetailResponse {
   pareto: CategoryData;
 }
 
+export interface TopKips {
+  detail_category: string;
+  total: number;
+  kipSla: string;
+}
+
+export interface TopCategories {
+  general_category: string;
+  total: number;
+  catSla: string;
+}
+
+export interface Trend {
+  product: string;
+  date: string;
+  total: number;
+  dailySla: string;
+}
+
+export interface ProductDetail {
+  product: string;
+  total: number;
+  open: number;
+  over3h: number;
+  pctSla: string;
+  topKips: TopKips[];
+  topCategories: TopCategories[];
+  trend: Trend[];
+}
+
+export interface ProductDetailResponse {
+  products: ProductDetail[];
+}

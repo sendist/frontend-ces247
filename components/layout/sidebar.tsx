@@ -54,7 +54,24 @@ export function Sidebar() {
       icon: LayoutDashboard,
       roles: ["USER", "ADMIN"],
     },
-    // Add more links as needed
+    {
+      title: "Ticket Breakdown Channel",
+      href: "/breakdown-channel",
+      icon: LayoutDashboard,
+      roles: ["USER", "ADMIN"],
+    },
+    {
+      title: "Corporate Detail",
+      href: "/corporate-detail",
+      icon: LayoutDashboard,
+      roles: ["USER", "ADMIN"],
+    },
+    {
+      title: "Product Detail",
+      href: "/product-detail",
+      icon: LayoutDashboard,
+      roles: ["USER", "ADMIN"],
+    },
   ];
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);

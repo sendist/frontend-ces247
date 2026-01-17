@@ -77,7 +77,7 @@ export function CorporateCard({
   );
 
   return (
-    <Card className="w-full max-w-4xl border-none bg-gray-50/50 shadow-sm p-1">
+    <Card className="w-full max-w-4xl border-none bg-[#F3F4F6] shadow-sm p-1">
       {/* Header Section */}
       <CardHeader className="flex flex-row items-start justify-between pt-2 px-4">
         <div className="flex flex-col gap-3">
@@ -110,9 +110,9 @@ export function CorporateCard({
               Top 10 Corp Open
             </div>
             {/* List */}
-            <div className="flex flex-col text-[6pt] font-medium text-slate-800">
+            <div className="flex flex-col text-[8pt] font-medium text-slate-800">
               {topCorporates.map((corp, index) => (
-                <div key={index} className="flex justify-between items-center pb-1">
+                <div key={index} className="flex justify-between items-center">
                   <span className="truncate pr-2">{corp.nama_perusahaan}</span>
                   <span className="font-bold">{corp.total}</span>
                 </div>
@@ -138,7 +138,7 @@ export function CorporateCard({
             {/* Chart List */}
             <div className="flex flex-col">
               {topIssues.map((issue, index) => (
-                <div key={index} className="flex items-center justify-end gap-2 text-[6pt]">
+                <div key={index} className="flex items-center justify-end gap-2 text-[8pt]">
                   {/* Label */}
                   <span className="text-right text-slate-900 truncate flex-1">
                     {issue.label}
