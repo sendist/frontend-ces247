@@ -89,3 +89,17 @@ export interface ProductDetail {
 export interface ProductDetailResponse {
   products: ProductDetail[];
 }
+
+export interface TopKipsCompany {
+  detail_category: string;
+  kip_count: number;
+  kip_sla: string;
+  rn: number;
+}
+
+export interface CompanyKips {
+  company: string;
+  totalTickets: number;
+  companySla: string;
+  topKips: TopKipsCompany[];
+}

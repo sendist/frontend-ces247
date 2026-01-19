@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CompanyKips } from "@/types/dashboard";
 
 // --- Types ---
 interface SubItem {
@@ -18,62 +19,33 @@ interface CorporateSlaItem {
 }
 
 interface SlaCustomerKipProps {
-  data?: CorporateSlaItem[];
+  data?: CompanyKips[];
   itemsPerPage?: number; // Added prop to control items per page
+  searchTerm?: string;
+  onSearchChange?: (value: string) => void;
+  isLoading?: boolean;
 }
 
 // --- Sample Data from Image ---
-const DEFAULT_DATA: CorporateSlaItem[] = [
+const DEFAULT_DATA: CompanyKips[] = [
   {
-    companyName: "PT. SUPER SPRING",
-    totalPercentage: 91.64,
-    items: [
-      { label: "Kendala penggunaan kartu SIM", percentage: 100.0 },
-      { label: "Informasi sisa kuota", percentage: 100.0 },
-      { label: "Re-aktivasi", percentage: 58.57 },
+    company: "PT. SUPER SPRING",
+    totalTickets: 90,
+    companySla: "85.00",
+    topKips: [
+      { detail_category: "Kendala penggunaan kartu SIM", kip_count: 100, kip_sla: "100.00", rn: 1 },
+      { detail_category: "Informasi sisa kuota", kip_count: 100, kip_sla: "100.00", rn: 2 },
+      { detail_category: "Re-aktivasi", kip_count: 58, kip_sla: "58.57", rn: 3 },
     ],
-  },
-  {
-    companyName: "SINAR GLOBAL SOLUSINDO",
-    totalPercentage: 88.94,
-    items: [
-      { label: "Permintaan Refresh GPRS", percentage: 89.59 },
-      { label: "Informasi sisa kuota", percentage: 100.0 },
-      { label: "Berhenti Berlangganan atau Terminasi", percentage: 51.61 },
-    ],
-  },
-  {
-    companyName: "PT. SUMBER SINERGI MAKMUR",
-    totalPercentage: 86.94,
-    items: [
-      { label: "Re-aktivasi", percentage: 79.1 },
-      { label: "Informasi status nomor", percentage: 95.61 },
-      { label: "Informasi sisa kuota", percentage: 95.41 },
-    ],
-  },
-  {
-    companyName: "PT. PERTAMINA (PERSERO )",
-    totalPercentage: 91.21,
-    items: [
-      { label: "Permintaan aktivasi paket (Scheduling)", percentage: 94.61 },
-      { label: "Permintaan aktivasi paket (On The Spot)", percentage: 92.05 },
-      { label: "Permintaan aktivasi paket", percentage: 82.67 },
-    ],
-  },
-  {
-    companyName: "PT. PANCARAN TEKNOLOGI TRANSPORTASI",
-    totalPercentage: 61.51,
-    items: [
-      { label: "Informasi sisa kuota", percentage: 57.49 },
-      { label: "Permintaan aktivasi paket", percentage: 74.63 },
-      { label: "Permintaan aktivasi paket (Scheduling)", percentage: 50.0 },
-    ],
-  },
+  }
 ];
 
 export function SlaCustomerKipCard({ 
   data = DEFAULT_DATA, 
-  itemsPerPage = 4 // Default to 2 so we can see pagination with the 5 sample items
+  itemsPerPage = 4, // Default to 2 so we can see pagination with the 5 sample items
+  searchTerm = "",
+  onSearchChange,
+  isLoading = false,
 }: SlaCustomerKipProps) {
   
   // 1. Pagination State
@@ -121,6 +93,10 @@ export function SlaCustomerKipCard({
     </div>
   );
 
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [data, searchTerm]);
+
   return (
     <Card className="w-full max-w-4xl border-none bg-[#F3F4F6] shadow-sm">
       {/* Header with Search */}
@@ -137,11 +113,18 @@ export function SlaCustomerKipCard({
             <Input 
               className="h-7 w-full sm:w-[200px] bg-white border-gray-300 pl-7 text-xs" 
               placeholder="" 
+              value={searchTerm}
+              onChange={(e) => onSearchChange && onSearchChange(e.target.value)}
             />
           </div>
         </div>
       </CardHeader>
 
+      {isLoading ? (
+        <div className="flex justify-center items-center py-10">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+        </div>
+      ) : (
       <CardContent className="px-6">
         <div className="flex flex-col space-y-2 min-h-[200px]">
           {/* Loop through currentItems instead of all data */}
@@ -151,19 +134,19 @@ export function SlaCustomerKipCard({
               {/* Main Corporate Row */}
               <div className="flex items-center justify-between mb-1">
                 <span className="font-bold text-xs text-slate-900 truncate pr-4">
-                  {corp.companyName}
+                  {corp.company}
                 </span>
-                <ProgressBar value={corp.totalPercentage} isMain={true} />
+                <ProgressBar value={parseFloat(corp.companySla)} isMain={true} />
               </div>
 
               {/* Sub Items */}
               <div className="flex flex-col gap-1">
-                {corp.items.map((item, subIndex) => (
+                {corp.topKips.map((item, subIndex) => (
                   <div key={subIndex} className="flex items-center justify-between pl-4">
                     <span className="text-[8pt] text-slate-700 truncate pr-4 bg-gray-100/50">
-                      {item.label}
+                      {item.detail_category}
                     </span>
-                    <ProgressBar value={item.percentage} isMain={false} />
+                    <ProgressBar value={parseFloat(item.kip_sla)} isMain={false} />
                   </div>
                 ))}
               </div>
@@ -216,6 +199,7 @@ export function SlaCustomerKipCard({
           </div>
         </div>
       </CardContent>
+      )}
     </Card>
   );
 }

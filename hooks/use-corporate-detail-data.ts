@@ -4,17 +4,19 @@ import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
 import { DateRange } from "react-day-picker";
 import { format } from "date-fns";
-import { DashboardSummary, ChannelData, CorporateDetailResponse } from "@/types/dashboard";
+import { DashboardSummary, ChannelData, CorporateDetailResponse, CompanyKips } from "@/types/dashboard";
 
 interface UseDashboardProps {
   dateRange?: DateRange;
+  search?: string;
 }
 
-export function useCorporateDetailData({ dateRange }: UseDashboardProps) {
+export function useCorporateDetailData({ dateRange, search }: UseDashboardProps) {
   // Helper to format dates for API (assuming API takes YYYY-MM-DD)
   const queryParams = {
     startDate: dateRange?.from ? format(dateRange.from, "yyyy-MM-dd") : undefined,
     endDate: dateRange?.to ? format(dateRange.to, "yyyy-MM-dd") : undefined,
+    search: search || undefined,
   };
 
   const corporateDetailQuery = useQuery({
@@ -30,7 +32,7 @@ export function useCorporateDetailData({ dateRange }: UseDashboardProps) {
   const companyKipsQuery = useQuery({
     queryKey: ["dashboard", "company-kips", queryParams],
     queryFn: async () => {
-      const { data } = await api.get<ChannelData[]>("/dashboard/company-kips", {
+      const { data } = await api.get<CompanyKips[]>("/dashboard/company-kips", {
         params: queryParams,
       });
       return data;
@@ -40,7 +42,8 @@ export function useCorporateDetailData({ dateRange }: UseDashboardProps) {
   return {
     corporateDetail: corporateDetailQuery.data,
     companyKips: companyKipsQuery.data,
-    isLoading: corporateDetailQuery.isLoading || companyKipsQuery.isLoading,
+    isLoadingCorporate: corporateDetailQuery.isLoading,
+    isLoadingKips: companyKipsQuery.isLoading,
     isError: corporateDetailQuery.isError || companyKipsQuery.isError,
     refetch: () => {
       corporateDetailQuery.refetch();
