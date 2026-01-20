@@ -3,6 +3,20 @@ export interface DashboardSummary {
   totalOpen: number;
   totalClosed: number;
   slaPercentage: string;
+  dailyTrend: DailyTrend[];
+  hourlyTrend: HourlyTrend[];
+}
+
+export interface DailyTrend {
+  date: string;
+  total: number;
+  sla: string;
+}
+
+export interface HourlyTrend {
+  hour: string;
+  total: number;
+  closed: number;
 }
 
 export interface TopItem {
