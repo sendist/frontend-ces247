@@ -160,11 +160,11 @@ export default function IncidentWidget() {
   const activeCount = incidents.filter((i) => i.status === "active").length;
 
   return (
-    <div className="w-full max-w-6xl mx-auto space-y-4 font-sans mt-8">
+    <div className="w-full mx-auto space-y-4 font-sans mt-8">
       {/* --- Header Section --- */}
-      <div className="relative">
+      <div className="relative -ml-2">
         {/* Icon */}
-        <div className="absolute -top-3 left-0 z-10">
+        <div className="absolute -top-2 left-2 z-10">
           <div className="bg-sky-400 p-1.5 rounded-lg border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             <HardHat className="w-6 h-6 text-white" />
           </div>
@@ -251,7 +251,7 @@ export default function IncidentWidget() {
       </div>
 
       {/* --- Content Area --- */}
-      <div className="bg-slate-100 border border-slate-300 rounded-sm p-4 relative ml-4 min-h-[200px]">
+      <div className="bg-slate-100 border border-slate-300 rounded-sm p-4 relative ml-2 min-h-[200px]">
         {visibleIncidents.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-40 text-slate-400">
             {showSolved ? (
