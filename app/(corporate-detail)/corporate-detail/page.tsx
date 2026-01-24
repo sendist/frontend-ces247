@@ -1,19 +1,39 @@
 "use client";
 
 import { CalendarDateRangePicker } from "@/components/dashboard/date-range-picker";
-import { addDays } from "date-fns";
-import { useEffect, useState } from "react";
+import { addDays, startOfDay } from "date-fns";
+import { useEffect, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { CorporateCard } from "@/components/dashboard/corporate-detail";
 import { useCorporateDetailData } from "@/hooks/use-corporate-detail-data";
 import { SlaCustomerKipCard } from "@/components/dashboard/corporate-kips";
+import { fromZonedTime } from "date-fns-tz";
 
 export default function DashboardPage() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: new Date("2025-11-01"),
-    to: addDays(new Date("2025-11-01"), 7),
+    from: new Date(),
+    to: new Date(),
   });
 
+  // Pagination state
+  const [page, setPage] = useState(1);
+  const [limit] = useState(4);
+
+  const normalizedDateRange = useMemo(() => {
+    if (!dateRange?.from) return undefined;
+
+    const tz = "Asia/Jakarta";
+
+    const fromLocal = startOfDay(dateRange.from);
+    const toLocal = dateRange.to
+      ? addDays(startOfDay(dateRange.to), 1)
+      : addDays(fromLocal, 1);
+
+    return {
+      from: fromZonedTime(fromLocal, tz).toISOString(),
+      to: fromZonedTime(toLocal, tz).toISOString(),
+    };
+  }, [dateRange]);
   const [inputValue, setInputValue] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
@@ -26,10 +46,25 @@ export default function DashboardPage() {
     return () => clearTimeout(timer);
   }, [inputValue]);
 
-  const { corporateDetail, companyKips, isLoadingKips, isLoadingCorporate } = useCorporateDetailData({
-    dateRange,
+  const {
+    corporateDetail,
+    companyKips,
+    isLoadingKips,
+    isLoadingCorporate,
+    totalCount,
+  } = useCorporateDetailData({
+    dateRange: normalizedDateRange,
+    // limit: ,
+    // page: ,
     search: debouncedSearch,
+    page: page,
+    limit: limit,
   });
+  // 3. Reset to page 1 if user searches
+  const handleSearchChange = (val: string) => {
+    setInputValue(val);
+    setPage(1);
+  };
 
   return (
     <div className="min-h-screen bg-slate-950 p-4 text-slate-200 mt-12 md:mt-0">
@@ -42,16 +77,14 @@ export default function DashboardPage() {
         </div>
       </div>
 
-
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-        
-          {/* Change col-span based on your layout needs */}
-          <div className="grid grid-cols-1 gap-2">
-                {isLoadingCorporate ? (
-        <p className="text-slate-500 col-span-full text-center py-10">
-          Loading dashboard data...
-        </p>
-      ) : (
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+        {/* Change col-span based on your layout needs */}
+        <div className="grid grid-cols-1 gap-2">
+          {isLoadingCorporate ? (
+            <p className="text-slate-500 col-span-full text-center py-10">
+              Loading dashboard data...
+            </p>
+          ) : (
             <div className="flex flex-col gap-4">
               <CorporateCard
                 isVip={true}
@@ -66,12 +99,21 @@ export default function DashboardPage() {
                 topCorporates={corporateDetail?.pareto.topCorps}
               />
             </div>
-                  )}
-          </div>
-
-          <SlaCustomerKipCard data={companyKips} searchTerm={inputValue} onSearchChange={setInputValue} isLoading={isLoadingKips} />
+          )}
         </div>
 
+        <SlaCustomerKipCard
+          data={companyKips?.data}
+          searchTerm={inputValue}
+          onSearchChange={handleSearchChange}
+          isLoading={isLoadingKips}
+          // Pass Pagination State
+          currentPage={page}
+          itemsPerPage={limit}
+          totalItems={totalCount || 0} // Use 0 fallback if backend not ready
+          onPageChange={setPage}
+        />
+      </div>
     </div>
   );
 }

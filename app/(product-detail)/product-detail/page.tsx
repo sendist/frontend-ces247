@@ -9,19 +9,37 @@ import {
   Globe,
 } from "lucide-react";
 import { CalendarDateRangePicker } from "@/components/dashboard/date-range-picker";
-import { addDays } from "date-fns";
-import { useState } from "react";
+import { addDays, startOfDay } from "date-fns";
+import { useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { ProductCard } from "@/components/dashboard/product-detail";
 import { useProductDetailData } from "@/hooks/use-product-detail-data";
+import { fromZonedTime } from "date-fns-tz";
 
 export default function DashboardPage() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: new Date("2025-11-01"),
-    to: addDays(new Date("2025-11-01"), 7),
+    from: new Date(),
+    to: new Date(),
   });
 
-  const { productDetail, isLoading } = useProductDetailData({ dateRange });
+  const normalizedDateRange = useMemo(() => {
+    if (!dateRange?.from) return undefined;
+
+    const tz = "Asia/Jakarta";
+
+    const fromLocal = startOfDay(dateRange.from);
+    const toLocal = dateRange.to
+      ? addDays(startOfDay(dateRange.to), 1)
+      : addDays(fromLocal, 1);
+
+    return {
+      from: fromZonedTime(fromLocal, tz).toISOString(),
+      to: fromZonedTime(toLocal, tz).toISOString(),
+    };
+  }, [dateRange]);
+  const { productDetail, isLoading } = useProductDetailData({
+    dateRange: normalizedDateRange,
+  });
 
   return (
     <div className="min-h-screen bg-slate-950 p-4 text-slate-200 mt-12 md:mt-0">
@@ -61,9 +79,7 @@ export default function DashboardPage() {
             <ProductCard
               product="Solution"
               data={
-                productDetail?.find(
-                  (item) => item.product === "SOLUTION",
-                ) ?? {
+                productDetail?.find((item) => item.product === "SOLUTION") ?? {
                   product: "SOLUTION",
                   total: 0,
                   open: 0,
@@ -78,9 +94,7 @@ export default function DashboardPage() {
             <ProductCard
               product="DAds"
               data={
-                productDetail?.find(
-                  (item) => item.product === "DADS",
-                ) ?? {
+                productDetail?.find((item) => item.product === "DADS") ?? {
                   product: "DADS",
                   total: 0,
                   open: 0,
