@@ -2,13 +2,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
-import { DateRange } from "react-day-picker";
-import { format } from "date-fns";
 import {
-  DashboardSummary,
-  ChannelData,
   CorporateDetailResponse,
-  CompanyKips,
   CompanyKipsResponse,
 } from "@/types/dashboard";
 
@@ -22,7 +17,7 @@ interface UseDashboardProps {
   limit?: number;
 }
 
-export function useCorporateDetailData({
+export function useCompanyKipsData({
   dateRange,
   search,
   page,
@@ -37,11 +32,11 @@ export function useCorporateDetailData({
     limit: limit ? limit : undefined,
   };
 
-  const corporateDetailQuery = useQuery({
-    queryKey: ["dashboard", "corporate-detail", queryParams],
+  const companyKipsQuery = useQuery({
+    queryKey: ["dashboard", "company-kips", queryParams],
     queryFn: async () => {
-      const { data } = await api.get<CorporateDetailResponse>(
-        "/dashboard/vip-pareto",
+      const { data } = await api.get<CompanyKipsResponse>(
+        "/dashboard/company-kips",
         {
           params: queryParams,
         },
@@ -51,11 +46,12 @@ export function useCorporateDetailData({
   });
 
   return {
-    corporateDetail: corporateDetailQuery.data,
-    isLoadingCorporate: corporateDetailQuery.isLoading,
-    isError: corporateDetailQuery.isError ,
+    companyKips: companyKipsQuery.data,
+    isLoadingKips: companyKipsQuery.isLoading,
+    isError: companyKipsQuery.isError,
+    totalCount: companyKipsQuery.data?.meta?.total,
     refetch: () => {
-      corporateDetailQuery.refetch();
+      companyKipsQuery.refetch();
     },
   };
 }

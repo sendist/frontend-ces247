@@ -8,6 +8,7 @@ import { CorporateCard } from "@/components/dashboard/corporate-detail";
 import { useCorporateDetailData } from "@/hooks/use-corporate-detail-data";
 import { SlaCustomerKipCard } from "@/components/dashboard/corporate-kips";
 import { fromZonedTime } from "date-fns-tz";
+import { useCompanyKipsData } from "@/hooks/use-company-kips-data";
 
 export default function DashboardPage() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -46,20 +47,17 @@ export default function DashboardPage() {
     return () => clearTimeout(timer);
   }, [inputValue]);
 
-  const {
-    corporateDetail,
-    companyKips,
-    isLoadingKips,
-    isLoadingCorporate,
-    totalCount,
-  } = useCorporateDetailData({
+  const { corporateDetail, isLoadingCorporate } = useCorporateDetailData({
     dateRange: normalizedDateRange,
-    // limit: ,
-    // page: ,
+  });
+
+  const { companyKips, isLoadingKips, totalCount } = useCompanyKipsData({
+    dateRange: normalizedDateRange,
     search: debouncedSearch,
     page: page,
     limit: limit,
   });
+
   // 3. Reset to page 1 if user searches
   const handleSearchChange = (val: string) => {
     setInputValue(val);
