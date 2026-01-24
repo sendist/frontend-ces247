@@ -40,17 +40,19 @@ interface TopRowProps {
 
 export function TopRow({ summary }: TopRowProps) {
   // Add this before your return statement
-const trendData = summary?.dailyTrend || [];
-const hasTrendData = trendData.length > 1;
+  const trendData = summary?.dailyTrend || [];
+  const hasTrendData = trendData.length > 1;
 
-// Get the values safely
-const todayValue = hasTrendData ? trendData[trendData.length - 1].value : 0;
-const yesterdayValue = hasTrendData ? trendData[trendData.length - 2].value : 0;
+  // Get the values safely
+  const todayValue = hasTrendData ? trendData[trendData.length - 1].value : 0;
+  const yesterdayValue = hasTrendData
+    ? trendData[trendData.length - 2].value
+    : 0;
 
-// Calculate the difference
-const trendDiff = todayValue - yesterdayValue;
-console.log(trendDiff)
-const trendDirection = trendDiff >= 0 ? "up" : "down";
+  // Calculate the difference
+  const trendDiff = todayValue - yesterdayValue;
+  console.log(trendDiff);
+  const trendDirection = trendDiff >= 0 ? "up" : "down";
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-16 gap-4 mb-4">
       <MetricCard
@@ -197,7 +199,10 @@ const trendDirection = trendDiff >= 0 ? "up" : "down";
         <MetricCard
           title="Created today"
           value={summary ? summary.totalCreated.toLocaleString() : "..."}
-          trend={{ value: Math.abs(trendDiff).toString(), direction: trendDirection }}
+          trend={{
+            value: Math.abs(trendDiff).toString(),
+            direction: trendDirection,
+          }}
           subtitle="vs last day"
           className="col-span-1"
         />
