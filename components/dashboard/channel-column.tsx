@@ -10,27 +10,14 @@ interface ChannelColumnProps {
   closed: number;
   topCorporateData: TopItem[];
   topKipData: TopItem[];
+  isLoading?: boolean; // <--- NEW PROP
 }
 
-// Columns definition for the DataTable
 const columns = [
   { key: "name", label: "Nama Perusahaan" },
   { key: "total", label: "Interaksi" },
   { key: "ticket", label: "Tiket" },
   { key: "pctFcr", label: "%FCR" },
-  // API didn't return FCR per corporate, so we remove that column for now
-];
-
-const corporateColumns = [
-  { key: "name", label: "Nama Perusahaan" },
-  { key: "tickets", label: "Tiket" },
-  { key: "fcr", label: "%FCR" },
-];
-
-const kipColumns = [
-  { key: "category", label: "Detail Kategori" },
-  { key: "tickets", label: "Tiket" },
-  { key: "fcr", label: "%FCR" },
 ];
 
 export function ChannelColumn({
@@ -41,7 +28,49 @@ export function ChannelColumn({
   closed,
   topCorporateData,
   topKipData,
+  isLoading = false, // Default to false
 }: ChannelColumnProps) {
+
+  // 1. RENDER SKELETON STATE
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-4 animate-pulse">
+        {/* Top Card Skeleton */}
+        <Card className="bg-slate-800/50 border-slate-700/50">
+          <CardHeader className="flex flex-row items-center space-y-0 pb-0 -mt-2">
+            {/* Icon Circle */}
+            <div className="h-6 w-6 rounded-full bg-slate-700" />
+            {/* Title Bar */}
+            <div className="h-5 w-24 bg-slate-700 rounded ml-2" />
+          </CardHeader>
+          <CardContent className="flex justify-between text-center px-4 pt-4 pb-2">
+            {/* 3 Stat Pillars */}
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="flex flex-col items-center gap-2">
+                <div className="h-3 w-8 bg-slate-700 rounded" />
+                <div className="w-16 h-8 bg-slate-700 rounded-full" />
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* Top Corporate Table Skeleton */}
+        <div className="rounded-md border border-slate-700/50 bg-slate-800/50 p-4 space-y-3">
+            <div className="h-4 w-1/3 bg-slate-700 rounded mb-4" />
+            <div className="h-8 w-full bg-slate-700/50 rounded" />
+            <div className="h-8 w-full bg-slate-700/50 rounded" />
+        </div>
+
+        {/* Top KIP Table Skeleton */}
+        <div className="rounded-md border border-slate-700/50 bg-slate-800/50 p-4 space-y-3">
+            <div className="h-4 w-1/3 bg-slate-700 rounded mb-4" />
+            <div className="h-8 w-full bg-slate-700/50 rounded" />
+        </div>
+      </div>
+    );
+  }
+
+  // 2. RENDER REAL STATE (Your original code)
   return (
     <div className="flex flex-col">
       <Card className="bg-slate-800 border-slate-700">

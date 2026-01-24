@@ -17,24 +17,15 @@ interface UseDashboardProps {
     from?: string;
     to?: string;
   };
-  search?: string;
-  page?: number;
-  limit?: number;
 }
 
 export function useCorporateDetailData({
   dateRange,
-  search,
-  page,
-  limit,
 }: UseDashboardProps) {
   // Helper to format dates for API (assuming API takes YYYY-MM-DD)
   const queryParams = {
     startDate: dateRange?.from ? dateRange.from : undefined,
     endDate: dateRange?.to ? dateRange.to : undefined,
-    search: search || undefined,
-    page: page ? page : undefined,
-    limit: limit ? limit : undefined,
   };
 
   const corporateDetailQuery = useQuery({

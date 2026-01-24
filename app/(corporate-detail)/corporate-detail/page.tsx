@@ -78,11 +78,6 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         {/* Change col-span based on your layout needs */}
         <div className="grid grid-cols-1 gap-2">
-          {isLoadingCorporate ? (
-            <p className="text-slate-500 col-span-full text-center py-10">
-              Loading dashboard data...
-            </p>
-          ) : (
             <div className="flex flex-col gap-4">
               <CorporateCard
                 isVip={true}
@@ -97,7 +92,6 @@ export default function DashboardPage() {
                 topCorporates={corporateDetail?.pareto.topCorps}
               />
             </div>
-          )}
         </div>
 
         <SlaCustomerKipCard

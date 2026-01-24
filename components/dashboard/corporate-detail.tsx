@@ -59,10 +59,10 @@ const DEFAULT_ISSUES: IssueItem[] = [
 
 export function CorporateCard({
     isVip = false,
-  overSlaCount = 14,
-  openCount = 21,
-  topCorporates = DEFAULT_CORPORATES,
-  topIssues = DEFAULT_ISSUES,
+  overSlaCount,
+  openCount,
+  topCorporates,
+  topIssues,
 }: P1CorporateCardProps) {
 
   // Helper for the colored stat boxes (Blue >6H, Red Open)
@@ -91,8 +91,8 @@ export function CorporateCard({
           
           {/* Top Stats Row (>6H, Open) */}
           <div className="flex gap-2">
-            <StatBadge label=">6H" value={overSlaCount} color="blue" />
-            <StatBadge label="Open" value={openCount} color="red" />
+            <StatBadge label=">6H" value={overSlaCount ?? 0} color="blue" />
+            <StatBadge label="Open" value={openCount ?? 0} color="red" />
           </div>
         </div>
 
@@ -111,7 +111,7 @@ export function CorporateCard({
             </div>
             {/* List */}
             <div className="flex flex-col text-[8pt] font-medium text-slate-800">
-              {topCorporates.map((corp, index) => (
+              {topCorporates?.map((corp, index) => (
                 <div key={index} className="flex justify-between items-center">
                   <span className="truncate pr-2">{corp.nama_perusahaan}</span>
                   <span className="font-bold">{corp.total}</span>
@@ -137,7 +137,7 @@ export function CorporateCard({
 
             {/* Chart List */}
             <div className="flex flex-col">
-              {topIssues.map((issue, index) => (
+              {topIssues?.map((issue, index) => (
                 <div key={index} className="flex items-center justify-end gap-2 text-[8pt]">
                   {/* Label */}
                   <span className="text-right text-slate-900 truncate flex-1">
