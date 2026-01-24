@@ -20,10 +20,14 @@ interface CorporateSlaItem {
 
 interface SlaCustomerKipProps {
   data?: CompanyKips[];
-  itemsPerPage?: number; // Added prop to control items per page
   searchTerm?: string;
   onSearchChange?: (value: string) => void;
   isLoading?: boolean;
+  // Pagination Props
+  currentPage: number;
+  itemsPerPage: number;
+  totalItems: number; // Required to calculate total pages
+  onPageChange: (page: number) => void;
 }
 
 // --- Sample Data from Image ---
@@ -33,58 +37,111 @@ const DEFAULT_DATA: CompanyKips[] = [
     totalTickets: 90,
     companySla: "85.00",
     topKips: [
-      { detail_category: "Kendala penggunaan kartu SIM", kip_count: 100, kip_sla: "100.00", rn: 1 },
-      { detail_category: "Informasi sisa kuota", kip_count: 100, kip_sla: "100.00", rn: 2 },
-      { detail_category: "Re-aktivasi", kip_count: 58, kip_sla: "58.57", rn: 3 },
+      {
+        detail_category: "Kendala penggunaan kartu SIM",
+        kip_count: 100,
+        kip_sla: "100.00",
+        rn: 1,
+      },
+      {
+        detail_category: "Informasi sisa kuota",
+        kip_count: 100,
+        kip_sla: "100.00",
+        rn: 2,
+      },
+      {
+        detail_category: "Re-aktivasi",
+        kip_count: 58,
+        kip_sla: "58.57",
+        rn: 3,
+      },
     ],
-  }
+  },
 ];
 
-export function SlaCustomerKipCard({ 
-  data = DEFAULT_DATA, 
-  itemsPerPage = 4, // Default to 2 so we can see pagination with the 5 sample items
+export function SlaCustomerKipCard({
+  data = DEFAULT_DATA,
   searchTerm = "",
   onSearchChange,
   isLoading = false,
+  currentPage,
+  itemsPerPage,
+  totalItems,
+  onPageChange,
 }: SlaCustomerKipProps) {
-  
-  // 1. Pagination State
-  const [currentPage, setCurrentPage] = useState(1);
-
-  // 2. Calculate Indexes
-  const totalItems = data.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-  
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  
-  // 3. Slice Data for Display
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
-  // 4. Navigation Handlers
+  // --- 1. Smart Pagination Logic ---
+  const getPaginationItems = () => {
+    const items: (number | string)[] = [];
+
+    // Always show fewer items on mobile (optional tweak)
+    const siblingCount = 1;
+
+    // Case: Total pages are small (<= 7), just show them all
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    // Always include first page
+    items.push(1);
+
+    // Calculate start and end of "window" around current page
+    const startPage = Math.max(2, currentPage - siblingCount);
+    const endPage = Math.min(totalPages - 1, currentPage + siblingCount);
+
+    // Add left ellipsis if needed
+    if (startPage > 2) {
+      items.push("..."); // represent gap
+    }
+
+    // Add middle pages
+    for (let i = startPage; i <= endPage; i++) {
+      items.push(i);
+    }
+
+    // Add right ellipsis if needed
+    if (endPage < totalPages - 1) {
+      items.push("..."); // represent gap
+    }
+
+    // Always include last page
+    if (totalPages > 1) {
+      items.push(totalPages);
+    }
+
+    return items;
+  };
+  // 2. Navigation Handlers (trigger parent update)
   const handleNext = () => {
     if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+      onPageChange(currentPage + 1);
     }
   };
 
   const handlePrev = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+      onPageChange(currentPage - 1);
     }
   };
 
-  const handlePageClick = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
+  // const handlePageClick = (pageNumber: number) => {
+  //   setCurrentPage(pageNumber);
+  // };
 
   // Helper to render the percentage bar
-  const ProgressBar = ({ value, isMain }: { value: number; isMain: boolean }) => (
+  const ProgressBar = ({
+    value,
+    isMain,
+  }: {
+    value: number;
+    isMain: boolean;
+  }) => (
     <div className="flex w-[120px] sm:w-[150px] justify-start bg-gray-200 h-4 sm:h-5 rounded-sm overflow-hidden">
       <div
         className={cn(
           "flex items-center justify-end px-2 text-xs font-bold text-white transition-all duration-500",
-          isMain ? "bg-[#0B1750]" : "bg-[#2b6cb0]"
+          isMain ? "bg-[#0B1750]" : "bg-[#2b6cb0]",
         )}
         style={{ width: `${value}%` }}
       >
@@ -93,9 +150,9 @@ export function SlaCustomerKipCard({
     </div>
   );
 
-  React.useEffect(() => {
-    setCurrentPage(1);
-  }, [data, searchTerm]);
+  // React.useEffect(() => {
+  //   setCurrentPage(1);
+  // }, [data, searchTerm]);
 
   return (
     <Card className="w-full max-w-4xl border-none bg-[#F3F4F6] shadow-sm">
@@ -110,9 +167,9 @@ export function SlaCustomerKipCard({
           </label>
           <div className="relative">
             <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-gray-500" />
-            <Input 
-              className="h-7 w-full sm:w-[200px] bg-white border-gray-300 pl-7 text-xs" 
-              placeholder="" 
+            <Input
+              className="h-7 w-full sm:w-[200px] bg-white border-gray-300 pl-7 text-xs"
+              placeholder=""
               value={searchTerm}
               onChange={(e) => onSearchChange && onSearchChange(e.target.value)}
             />
@@ -125,80 +182,98 @@ export function SlaCustomerKipCard({
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
         </div>
       ) : (
-      <CardContent className="px-6">
-        <div className="flex flex-col space-y-2 min-h-[200px]">
-          {/* Loop through currentItems instead of all data */}
-          {currentItems.map((corp, index) => (
-            <div key={index} className="flex flex-col border-b border-gray-300 pb-2 last:border-0 animate-in fade-in slide-in-from-bottom-2 duration-300">
-              
-              {/* Main Corporate Row */}
-              <div className="flex items-center justify-between mb-1">
-                <span className="font-bold text-xs text-slate-900 truncate pr-4">
-                  {corp.company}
-                </span>
-                <ProgressBar value={parseFloat(corp.companySla)} isMain={true} />
+        <CardContent className="px-6">
+          <div className="flex flex-col space-y-2 min-h-[200px]">
+            {/* Loop through currentItems instead of all data */}
+            {data.map((corp, index) => (
+              <div
+                key={index}
+                className="flex flex-col border-b border-gray-300 pb-2 last:border-0 animate-in fade-in slide-in-from-bottom-2 duration-300"
+              >
+                {/* Main Corporate Row */}
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-bold text-xs text-slate-900 truncate pr-4">
+                    {corp.company}
+                  </span>
+                  <ProgressBar
+                    value={parseFloat(corp.companySla)}
+                    isMain={true}
+                  />
+                </div>
+
+                {/* Sub Items */}
+                <div className="flex flex-col gap-1">
+                  {corp.topKips.map((item, subIndex) => (
+                    <div
+                      key={subIndex}
+                      className="flex items-center justify-between pl-4"
+                    >
+                      <span className="text-[8pt] text-slate-700 truncate pr-4 bg-gray-100/50">
+                        {item.detail_category}
+                      </span>
+                      <ProgressBar
+                        value={parseFloat(item.kip_sla)}
+                        isMain={false}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-
-              {/* Sub Items */}
-              <div className="flex flex-col gap-1">
-                {corp.topKips.map((item, subIndex) => (
-                  <div key={subIndex} className="flex items-center justify-between pl-4">
-                    <span className="text-[8pt] text-slate-700 truncate pr-4 bg-gray-100/50">
-                      {item.detail_category}
-                    </span>
-                    <ProgressBar value={parseFloat(item.kip_sla)} isMain={false} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Footer Pagination */}
-        <div className="mt-6 flex items-center justify-center gap-2">
-          <span className="text-sm font-bold text-slate-900 mr-2">Page</span>
-          
-          {/* Dynamic Page Buttons */}
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <Button 
-              key={page}
-              size="sm" 
-              onClick={() => handlePageClick(page)}
-              className={cn(
-                "h-7 w-7 rounded-none p-0 text-xs transition-colors",
-                currentPage === page 
-                  ? "bg-[#C20000] text-white hover:bg-[#a00000]" // Active State
-                  : "bg-gray-300 text-slate-600 hover:bg-gray-400" // Inactive State
-              )}
-            >
-              {page}
-            </Button>
-          ))}
-
-          {/* Navigation Arrows */}
-          <div className="flex gap-1 ml-2">
-            <Button 
-              variant="outline" 
-              size="icon" 
-              onClick={handlePrev}
-              disabled={currentPage === 1}
-              className="h-7 w-7 rounded-full border-2 border-slate-800 p-0 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-100"
-            >
-               <ChevronLeft className="h-4 w-4 text-slate-800" />
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              size="icon" 
-              onClick={handleNext}
-              disabled={currentPage === totalPages}
-              className="h-7 w-7 rounded-full border-2 border-slate-800 p-0 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-100"
-            >
-               <ChevronRight className="h-4 w-4 text-slate-800" />
-            </Button>
+            ))}
           </div>
-        </div>
-      </CardContent>
+
+          {/* --- 2. UPDATED Footer Pagination --- */}
+          <div className="mt-6 flex items-center justify-center gap-2 select-none">
+            <span className="text-sm font-bold text-slate-900 mr-2">Page</span>
+
+            {/* Loop through the Smart Pagination Items */}
+            {getPaginationItems().map((item, index) => (
+              <React.Fragment key={index}>
+                {item === "..." ? (
+                  // Render Ellipsis
+                  <span className="px-2 text-slate-400 text-xs">...</span>
+                ) : (
+                  // Render Page Button
+                  <Button
+                    size="sm"
+                    onClick={() => onPageChange(item as number)}
+                    className={cn(
+                      "h-7 w-7 rounded-none p-0 text-xs transition-colors",
+                      currentPage === item
+                        ? "bg-[#C20000] text-white hover:bg-[#a00000]"
+                        : "bg-gray-300 text-slate-600 hover:bg-gray-400",
+                    )}
+                  >
+                    {item}
+                  </Button>
+                )}
+              </React.Fragment>
+            ))}
+
+            {/* Navigation Arrows */}
+            <div className="flex gap-1 ml-2">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handlePrev}
+                disabled={currentPage === 1}
+                className="h-7 w-7 rounded-full border-2 border-slate-800 p-0 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-100"
+              >
+                <ChevronLeft className="h-4 w-4 text-slate-800" />
+              </Button>
+
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handleNext}
+                disabled={currentPage >= totalPages}
+                className="h-7 w-7 rounded-full border-2 border-slate-800 p-0 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-100"
+              >
+                <ChevronRight className="h-4 w-4 text-slate-800" />
+              </Button>
+            </div>
+          </div>
+        </CardContent>
       )}
     </Card>
   );

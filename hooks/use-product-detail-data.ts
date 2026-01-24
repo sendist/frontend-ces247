@@ -4,19 +4,27 @@ import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
 import { DateRange } from "react-day-picker";
 import { format } from "date-fns";
-import { DashboardSummary, ChannelData, CorporateDetailResponse, ProductDetailResponse, ProductDetail } from "@/types/dashboard";
+import {
+  DashboardSummary,
+  ChannelData,
+  CorporateDetailResponse,
+  ProductDetailResponse,
+  ProductDetail,
+} from "@/types/dashboard";
 
 interface UseDashboardProps {
-  dateRange?: DateRange;
+  dateRange?: {
+    from?: string;
+    to?: string;
+  };
 }
 
 export function useProductDetailData({ dateRange }: UseDashboardProps) {
   // Helper to format dates for API (assuming API takes YYYY-MM-DD)
   const queryParams = {
-    startDate: dateRange?.from ? format(dateRange.from, "yyyy-MM-dd") : undefined,
-    endDate: dateRange?.to ? format(dateRange.to, "yyyy-MM-dd") : undefined,
+    startDate: dateRange?.from ? dateRange.from : undefined,
+    endDate: dateRange?.to ? dateRange.to : undefined,
   };
-
   const productDetailQuery = useQuery({
     queryKey: ["dashboard", "product-detail", queryParams],
     queryFn: async () => {

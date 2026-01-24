@@ -1,4 +1,5 @@
 export interface DashboardSummary {
+  totalCreated: number;
   totalTickets: number;
   totalOpen: number;
   totalClosed: number;
@@ -9,7 +10,7 @@ export interface DashboardSummary {
 
 export interface DailyTrend {
   date: string;
-  total: number;
+  value: number;
   sla: string;
 }
 
@@ -116,4 +117,14 @@ export interface CompanyKips {
   totalTickets: number;
   companySla: string;
   topKips: TopKipsCompany[];
+}
+
+export interface CompanyKipsResponse {
+  data: CompanyKips[],
+  meta: {
+    page: number,
+    limit: number,
+    total: number,
+    totalPages: number
+  }
 }
