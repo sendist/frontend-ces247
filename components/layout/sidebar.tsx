@@ -3,10 +3,13 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { 
-  LayoutDashboard, 
-  LogOut, 
-  Menu 
+import {
+  Building2,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  ShoppingBasket,
+  TicketPercent,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -26,7 +29,7 @@ export function Sidebar() {
   const router = useRouter();
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  
+
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -34,14 +37,14 @@ export function Sidebar() {
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const logoutMutation = useMutation({
     mutationFn: async () => api.post("api/auth/logout"),
     onSuccess: () => {
-      queryClient.clear(); 
+      queryClient.clear();
       toast("Logged out");
       router.push("/login");
     },
@@ -57,19 +60,19 @@ export function Sidebar() {
     {
       title: "Ticket Breakdown Channel",
       href: "/breakdown-channel",
-      icon: LayoutDashboard,
+      icon: TicketPercent,
       roles: ["USER", "ADMIN"],
     },
     {
       title: "Corporate Detail",
       href: "/corporate-detail",
-      icon: LayoutDashboard,
+      icon: Building2,
       roles: ["USER", "ADMIN"],
     },
     {
       title: "Product Detail",
       href: "/product-detail",
-      icon: LayoutDashboard,
+      icon: ShoppingBasket,
       roles: ["USER", "ADMIN"],
     },
   ];
@@ -78,11 +81,11 @@ export function Sidebar() {
 
   return (
     <TooltipProvider delayDuration={0}>
-      <div 
+      <div
         className={cn(
           // --- Base Styles ---
           "flex flex-col justify-between bg-gray-50/95 backdrop-blur supports-[backdrop-filter]:bg-gray-50/60 dark:bg-gray-900/95 border-gray-200 dark:border-gray-800 transition-all duration-300 ease-in-out z-50 overflow-hidden",
-          
+
           // --- Mobile Styles (Default) ---
           // Position: Fixed at top
           "fixed top-0 left-0 right-0 w-full border-b",
@@ -93,21 +96,22 @@ export function Sidebar() {
           // Position: Relative (pushes content), Vertical, Full Height
           "md:relative md:h-screen md:border-r md:border-b-0 md:bottom-auto",
           // Width: toggles between 16 (icon only) and 64 (expanded)
-          isCollapsed ? "md:w-16" : "md:w-64"
+          isCollapsed ? "md:w-16" : "md:w-64",
         )}
       >
-        
         {/* Top Section: Toggle & Nav */}
         <div className="flex flex-col">
-            
           {/* Header / Logo Area */}
           {/* On mobile this is the horizontal bar. On desktop it's the top of the sidebar. */}
-          <div className={cn(
-             "flex items-center h-16 shrink-0", 
-             // Center content if collapsed on desktop, otherwise standard spacing
-             isCollapsed ? "md:justify-center px-4" : "justify-start px-6 gap-4"
-          )}>
-            
+          <div
+            className={cn(
+              "flex items-center h-16 shrink-0",
+              // Center content if collapsed on desktop, otherwise standard spacing
+              isCollapsed
+                ? "md:justify-center px-4"
+                : "justify-start px-6 gap-4",
+            )}
+          >
             {/* Burger Menu Button */}
             <Button
               variant="ghost"
@@ -121,31 +125,39 @@ export function Sidebar() {
 
             {/* Logo / Title */}
             {/* Logic: Visible if expanded OR if we are on mobile (so the top bar has a title) */}
-            <div className={cn(
+            <div
+              className={cn(
                 "transition-all duration-300 overflow-hidden whitespace-nowrap",
-                isCollapsed && !isMobile ? "w-0 opacity-0" : "w-auto opacity-100 ml-2"
-            )}>
-               <h2 className="text-lg font-semibold tracking-tight">CES247</h2>
+                isCollapsed && !isMobile
+                  ? "w-0 opacity-0"
+                  : "w-auto opacity-100 ml-2",
+              )}
+            >
+              <h2 className="text-lg font-semibold tracking-tight">CES247</h2>
             </div>
           </div>
 
           {/* User Welcome Message */}
           {(!isCollapsed || isMobile) && (
-             <div className={cn(
-               "px-6 pb-2 text-xs text-muted-foreground truncate transition-all duration-300",
-               // Hide on mobile when collapsed to keep the bar slim
-               isMobile && isCollapsed ? "hidden" : "block"
-             )}>
-                Welcome, {user?.name}
-             </div>
+            <div
+              className={cn(
+                "px-6 pb-2 text-xs text-muted-foreground truncate transition-all duration-300",
+                // Hide on mobile when collapsed to keep the bar slim
+                isMobile && isCollapsed ? "hidden" : "block",
+              )}
+            >
+              Welcome, {user?.name}
+            </div>
           )}
-          
+
           {/* Navigation Links */}
-          <nav className={cn(
-             "space-y-2 px-2 mt-2 flex flex-col overflow-y-auto",
-             // Hide nav items completely on mobile when collapsed
-             isMobile && isCollapsed ? "hidden" : "flex"
-          )}>
+          <nav
+            className={cn(
+              "space-y-2 px-2 mt-2 flex flex-col overflow-y-auto",
+              // Hide nav items completely on mobile when collapsed
+              isMobile && isCollapsed ? "hidden" : "flex",
+            )}
+          >
             {links.map((link) => {
               if (user && !link.roles.includes(user.role)) return null;
               const Icon = link.icon;
@@ -160,16 +172,16 @@ export function Sidebar() {
                         href={link.href}
                         className={cn(
                           "flex h-9 w-9 items-center justify-center rounded-md transition-colors hover:bg-accent hover:text-accent-foreground mx-auto",
-                          isActive ? "bg-accent text-accent-foreground" : "text-muted-foreground"
+                          isActive
+                            ? "bg-accent text-accent-foreground"
+                            : "text-muted-foreground",
                         )}
                       >
                         <Icon className="h-4 w-4" />
                         <span className="sr-only">{link.title}</span>
                       </Link>
                     </TooltipTrigger>
-                    <TooltipContent side="right">
-                      {link.title}
-                    </TooltipContent>
+                    <TooltipContent side="right">{link.title}</TooltipContent>
                   </Tooltip>
                 );
               }
@@ -181,7 +193,9 @@ export function Sidebar() {
                   href={link.href}
                   className={cn(
                     "flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors",
-                    isActive ? "bg-accent text-accent-foreground" : "text-muted-foreground"
+                    isActive
+                      ? "bg-accent text-accent-foreground"
+                      : "text-muted-foreground",
                   )}
                   onClick={() => isMobile && setIsCollapsed(true)} // Close menu on click (Mobile only)
                 >
@@ -194,38 +208,39 @@ export function Sidebar() {
         </div>
 
         {/* Footer / Logout */}
-        <div className={cn(
-             "p-2 border-t md:border-t-0",
-             isMobile && isCollapsed ? "hidden" : "block"
-        )}>
-           {(isCollapsed && !isMobile) ? (
-              <Tooltip>
-                  <TooltipTrigger asChild>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="h-9 w-9 mx-auto flex justify-center text-red-600 hover:text-red-700 hover:bg-red-50"
-                          onClick={() => logoutMutation.mutate()}
-                      >
-                          <LogOut className="h-4 w-4" />
-                          <span className="sr-only">Logout</span>
-                      </Button>
-                  </TooltipTrigger>
-                  <TooltipContent side="right">Logout</TooltipContent>
-              </Tooltip>
-          ) : (
-              <Button 
-                  variant="outline" 
-                  className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
+        <div
+          className={cn(
+            "p-2 border-t md:border-t-0",
+            isMobile && isCollapsed ? "hidden" : "block",
+          )}
+        >
+          {isCollapsed && !isMobile ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9 mx-auto flex justify-center text-red-600 hover:text-red-700 hover:bg-red-50"
                   onClick={() => logoutMutation.mutate()}
-              >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  {logoutMutation.isPending ? "Logging out..." : "Logout"}
-              </Button>
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span className="sr-only">Logout</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right">Logout</TooltipContent>
+            </Tooltip>
+          ) : (
+            <Button
+              variant="outline"
+              className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
+              onClick={() => logoutMutation.mutate()}
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              {logoutMutation.isPending ? "Logging out..." : "Logout"}
+            </Button>
           )}
         </div>
       </div>
     </TooltipProvider>
-    
   );
 }
