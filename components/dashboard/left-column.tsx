@@ -28,7 +28,7 @@ export function LeftColumn({ summary }: LeftColumnProps) {
   return (
     <div className="flex flex-col gap-4">
       <Card className="bg-red-900/20 border-red-900/50 text-center">
-        <CardHeader className="pb-2">
+        <CardHeader className="pb-2 py-4">
           <CardTitle className="text-2xl font-bold text-red-500">
             {summary.totalTickets.toLocaleString()}
           </CardTitle>
@@ -52,7 +52,7 @@ export function LeftColumn({ summary }: LeftColumnProps) {
 
       <Card className="bg-slate-800 border-slate-700">
         <CardHeader className="pb-2 bg-red-900/50">
-          <CardTitle className="text-xs font-medium text-white text-center">
+          <CardTitle className="text-xs font-medium text-white text-center pt-4">
             Priority (Unresolved)
           </CardTitle>
         </CardHeader>
