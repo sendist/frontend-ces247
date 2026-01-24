@@ -39,6 +39,18 @@ interface TopRowProps {
 }
 
 export function TopRow({ summary }: TopRowProps) {
+  // Add this before your return statement
+const trendData = summary?.dailyTrend || [];
+const hasTrendData = trendData.length > 1;
+
+// Get the values safely
+const todayValue = hasTrendData ? trendData[trendData.length - 1].value : 0;
+const yesterdayValue = hasTrendData ? trendData[trendData.length - 2].value : 0;
+
+// Calculate the difference
+const trendDiff = todayValue - yesterdayValue;
+console.log(trendDiff)
+const trendDirection = trendDiff >= 0 ? "up" : "down";
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-16 gap-4 mb-4">
       <MetricCard
@@ -184,9 +196,9 @@ export function TopRow({ summary }: TopRowProps) {
       <div className="grid grid-cols-3 gap-2 col-span-2 lg:col-span-5">
         <MetricCard
           title="Created today"
-          value={summary ? summary.totalTickets.toLocaleString() : "..."}
-          trend={{ value: "18", direction: "up" }}
-          subtitle="vs last week"
+          value={summary ? summary.totalCreated.toLocaleString() : "..."}
+          trend={{ value: Math.abs(trendDiff).toString(), direction: trendDirection }}
+          subtitle="vs last day"
           className="col-span-1"
         />
         <MetricCard
