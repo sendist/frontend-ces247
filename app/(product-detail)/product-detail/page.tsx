@@ -18,7 +18,7 @@ import { fromZonedTime } from "date-fns-tz";
 
 export default function DashboardPage() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: new Date(),
+    from: new Date(new Date().setMonth(new Date().getMonth() - 1)),
     to: new Date(),
   });
 
@@ -53,61 +53,64 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-        {isLoading ? (
+        {/* {isLoading ? (
           <p className="text-slate-500 col-span-full text-center py-10">
             Loading dashboard data...
           </p>
-        ) : (
-          <>
-            <ProductCard
-              product="Connectivity"
-              data={
-                productDetail?.find(
-                  (item) => item.product === "CONNECTIVITY",
-                ) ?? {
-                  product: "CONNECTIVITY",
-                  total: 0,
-                  open: 0,
-                  over3h: 0,
-                  pctSla: "0%",
-                  topKips: [],
-                  topCategories: [],
-                  trend: [],
-                }
+        ) : ( */}
+        <>
+          <ProductCard
+            product="Connectivity"
+            isLoading={isLoading}
+            data={
+              productDetail?.find(
+                (item) => item.product === "CONNECTIVITY",
+              ) ?? {
+                product: "CONNECTIVITY",
+                total: 0,
+                open: 0,
+                over3h: 0,
+                pctSla: "0%",
+                topKips: [],
+                topCategories: [],
+                trend: [],
               }
-            />
-            <ProductCard
-              product="Solution"
-              data={
-                productDetail?.find((item) => item.product === "SOLUTION") ?? {
-                  product: "SOLUTION",
-                  total: 0,
-                  open: 0,
-                  over3h: 0,
-                  pctSla: "0%",
-                  topKips: [],
-                  topCategories: [],
-                  trend: [],
-                }
+            }
+          />
+          <ProductCard
+            product="Solution"
+            isLoading={isLoading}
+            data={
+              productDetail?.find((item) => item.product === "SOLUTION") ?? {
+                product: "SOLUTION",
+                total: 0,
+                open: 0,
+                over3h: 0,
+                pctSla: "0%",
+                topKips: [],
+                topCategories: [],
+                trend: [],
               }
-            />
-            <ProductCard
-              product="DAds"
-              data={
-                productDetail?.find((item) => item.product === "DADS") ?? {
-                  product: "DADS",
-                  total: 0,
-                  open: 0,
-                  over3h: 0,
-                  pctSla: "0%",
-                  topKips: [],
-                  topCategories: [],
-                  trend: [],
-                }
+            }
+          />
+          <ProductCard
+            product="DAds"
+            isLoading={isLoading}
+            data={
+              productDetail?.find((item) => item.product === "DADS") ?? {
+                product: "DADS",
+                total: 0,
+                open: 0,
+                over3h: 0,
+                pctSla: "0%",
+                topKips: [],
+                topCategories: [],
+                trend: [],
               }
-            />
-          </>
-        )}
+            }
+          />
+        </>
+        {/* )} */}
       </div>
     </div>
   );

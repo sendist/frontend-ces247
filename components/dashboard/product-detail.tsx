@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Network } from "lucide-react"; // Icon for Connectivity
+import { HandHeart, Network, Smartphone } from "lucide-react";
 import {
   ComposedChart,
   Bar,
@@ -22,41 +22,94 @@ import {
   LabelList,
 } from "recharts";
 import { cn } from "@/lib/utils";
-import { ProductDetail, ProductDetailResponse } from "@/types/dashboard";
+import { ProductDetail } from "@/types/dashboard";
 
 interface ProductDetailProps {
   product: String;
   data: ProductDetail;
+  isLoading?: boolean; // <--- NEW PROP
 }
 
-export function ProductCard({ product, data }: ProductDetailProps) {
-  // Filter for CONNECTIVITY data
-  //   const connectivityData = useMemo(() => {
-  //     return data.find((item) => item.product === "CONNECTIVITY");
-  //   }, [data]);
+export function ProductCard({
+  product,
+  data,
+  isLoading = false,
+}: ProductDetailProps) {
+  // 1. SKELETON RENDER (Shows when isLoading is true)
+  if (isLoading) {
+    return (
+      <Card className="w-full max-w-4xl border-none shadow-sm bg-gray-50/50">
+        <CardHeader className="flex flex-row items-center gap-2">
+          {/* Icon Skeleton */}
+          <div className="h-6 w-6 rounded-full bg-slate-200 animate-pulse" />
+          {/* Title Skeleton */}
+          <div className="h-5 w-32 bg-slate-200 rounded animate-pulse" />
+        </CardHeader>
+
+        <CardContent className="space-y-4 -mx-4 -mt-2">
+          {/* TOP SECTION SKELETON */}
+          <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+            <div className="flex gap-4 mb-4">
+              <div className="h-12 w-24 bg-slate-100 rounded-md animate-pulse" />
+              <div className="h-12 w-24 bg-slate-100 rounded-md animate-pulse" />
+            </div>
+            <div className="space-y-2">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="flex gap-2 items-center">
+                  <div className="h-3 w-24 bg-slate-100 rounded animate-pulse ml-auto" />
+                  <div className="h-5 w-full max-w-[200px] bg-slate-200 rounded animate-pulse" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* MIDDLE SECTION SKELETON */}
+          <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+            <div className="flex justify-between mb-4">
+              <div className="flex gap-2">
+                <div className="h-10 w-16 bg-slate-200 rounded-lg animate-pulse" />
+                <div className="h-10 w-16 bg-slate-200 rounded-lg animate-pulse" />
+              </div>
+              <div className="h-8 w-32 bg-slate-100 rounded animate-pulse" />
+            </div>
+            <div className="h-[180px] w-full bg-slate-50 rounded animate-pulse" />
+          </div>
+
+          {/* BOTTOM SECTION SKELETON */}
+          <div className="rounded-xl border border-gray-200 overflow-hidden">
+            <div className="h-10 bg-slate-200 animate-pulse w-full" />
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="h-8 bg-white border-b border-gray-100 animate-pulse"
+              />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // 2. REAL RENDER (Existing Logic)
   const connectivityData = data;
 
   if (!connectivityData) return <div>No Connectivity Data Found</div>;
 
-  // --- Process Trend Data for Chart ---
-  // Convert "2025-02-01" -> "1"
   const chartData = useMemo(() => {
     return connectivityData.trend.map((item) => ({
-      name: parseInt(item.date.split("-")[2]).toString(), // Extract day
+      name: parseInt(item.date.split("-")[2]).toString(),
       total: item.total,
       sla: parseFloat(item.dailySla),
     }));
   }, [connectivityData.trend]);
 
-  // --- Helpers for Top Section Bars ---
-  const maxCategoryTotal = Math.max(
-    ...connectivityData.topCategories.map((c) => c.total),
-  );
+  const maxCategoryTotal =
+    Math.max(...connectivityData.topCategories.map((c) => c.total)) || 1; // Prevent division by zero
 
   return (
     <Card className="w-full max-w-4xl border-none shadow-sm bg-gray-50/50">
       <CardHeader className="flex flex-row items-center gap-2">
-        <Network className="h-6 w-6 text-md text-sky-500" />
+        {getProductIcon(product)}{" "}
         <CardTitle className="text-md font-bold text-slate-900">
           {product} Detail
         </CardTitle>
@@ -65,7 +118,6 @@ export function ProductCard({ product, data }: ProductDetailProps) {
       <CardContent className="space-y-4 -mx-4 -mt-2">
         {/* --- TOP SECTION: Categories Breakdown --- */}
         <div className="bg-white p-4 rounded-xl shadow-sm">
-          {/* Header Stats */}
           <div className="flex gap-4 mb-4">
             <div className="bg-gray-200 px-3 py-1 rounded-md">
               <span className="text-xs font-bold text-slate-500 block">
@@ -85,24 +137,18 @@ export function ProductCard({ product, data }: ProductDetailProps) {
             </div>
           </div>
 
-          {/* Horizontal Bar Chart Grid */}
           <div className="grid grid-cols-8 gap-1 text-xs">
-            {/* Headers */}
             <div className="col-span-4 text-right font-bold text-slate-700"></div>
             <div className="col-span-2 font-bold text-slate-900">
               Total Ticket
             </div>
             <div className="col-span-2 font-bold text-slate-900">%SLA</div>
 
-            {/* Rows */}
             {connectivityData.topCategories.map((cat, idx) => (
               <React.Fragment key={idx}>
-                {/* Label */}
                 <div className="col-span-4 flex items-center justify-end text-right text-xs font-semibold text-slate-600 uppercase pr-2">
                   {cat.general_category}
                 </div>
-
-                {/* Total Bar (Dark Blue) */}
                 <div className="col-span-2 flex items-center">
                   <div
                     className="h-5 bg-[#0B1750] rounded-sm transition-all duration-500"
@@ -115,8 +161,6 @@ export function ProductCard({ product, data }: ProductDetailProps) {
                     {cat.total}
                   </span>
                 </div>
-
-                {/* SLA Bar (Light Blue) */}
                 <div className="col-span-2 flex items-center">
                   <div
                     className="h-5 bg-[#bfdbfe] rounded-sm transition-all duration-500"
@@ -133,7 +177,6 @@ export function ProductCard({ product, data }: ProductDetailProps) {
 
         {/* --- MIDDLE SECTION: Trend Chart --- */}
         <div className="bg-white p-4 rounded-xl shadow-sm relative">
-          {/* Controls Header */}
           <div className="flex justify-between items-start mb-6">
             <div className="flex gap-2">
               <div className="bg-[#0B1750] text-white px-4 py-2 rounded-lg text-center min-w-[70px]">
@@ -159,7 +202,6 @@ export function ProductCard({ product, data }: ProductDetailProps) {
               </Select>
             </div>
           </div>
-          {/* Recharts Combo Chart */}
           <div className="h-[200px] w-full text-xs -mt-4">
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart
@@ -167,38 +209,25 @@ export function ProductCard({ product, data }: ProductDetailProps) {
                 margin={{ top: 20, right: 0, bottom: 20, left: 0 }}
               >
                 <CartesianGrid stroke="#f5f5f5" vertical={false} />
-
                 <XAxis
                   dataKey="name"
-                  scale="point"
+                  // scale="point"
                   padding={{ left: 10, right: 10 }}
                   tickLine={false}
                   axisLine={false}
                   tick={{ fill: "#6b7280", fontSize: 10 }}
                 />
-
-                {/* FIX 1: Control the Bar Height 
-                       We set the domain max to 'dataMax * 2.5'. 
-                       This means the tallest bar will only take up about 40% of the height,
-                       leaving the top 60% free for the line chart.
-                    */}
                 <YAxis
                   yAxisId="left"
                   hide
                   domain={[0, (dataMax: number) => dataMax * 2.5]}
                 />
-
-                {/* FIX 2: Control the Line Height
-                       SLA is usually 0-100. We keep it standard. 
-                       Because the bars are pushed down by Fix 1, the line will float above.
-                    */}
                 <YAxis
                   yAxisId="right"
                   orientation="right"
                   hide
                   domain={[0, 120]}
                 />
-
                 <Tooltip
                   contentStyle={{
                     borderRadius: "8px",
@@ -207,13 +236,11 @@ export function ProductCard({ product, data }: ProductDetailProps) {
                   }}
                   labelStyle={{ color: "#374151", fontWeight: "bold" }}
                 />
-
-                {/* Bars for Total */}
                 <Bar
                   yAxisId="left"
                   dataKey="total"
                   fill="#0B1750"
-                  barSize={12}
+                  barSize={10}
                   radius={[2, 2, 0, 0]}
                 >
                   <LabelList
@@ -226,8 +253,6 @@ export function ProductCard({ product, data }: ProductDetailProps) {
                     }}
                   />
                 </Bar>
-
-                {/* Line for SLA */}
                 <Line
                   yAxisId="right"
                   type="monotone"
@@ -240,14 +265,12 @@ export function ProductCard({ product, data }: ProductDetailProps) {
                     dataKey="sla"
                     position="top"
                     offset={10}
-                    formatter={(val) => `${val}%`}
+                    formatter={(val: any) => `${val}%`}
                     style={{ fill: "#6b7280", fontSize: "8px" }}
                   />
                 </Line>
               </ComposedChart>
             </ResponsiveContainer>
-
-            {/* Legend */}
             <div className="flex justify-center gap-4 -mt-6">
               <div className="flex items-center gap-1">
                 <div className="w-3 h-1 bg-[#0B1750]"></div>
@@ -303,3 +326,20 @@ export function ProductCard({ product, data }: ProductDetailProps) {
     </Card>
   );
 }
+
+const getProductIcon = (productName: String) => {
+  const normalized = productName.toLowerCase();
+
+  if (normalized.includes("connectivity")) {
+    return <Network className="h-6 w-6 text-sky-500" />;
+  }
+  if (normalized.includes("solution")) {
+    return <HandHeart className="h-6 w-6 text-emerald-500" />;
+  }
+  if (normalized.includes("ads") || normalized.includes("dads")) {
+    return <Smartphone className="h-6 w-6 text-orange-500" />;
+  }
+
+  // Default fallback
+  return <Network className="h-6 w-6 text-slate-500" />;
+};

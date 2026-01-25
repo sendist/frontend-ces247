@@ -16,10 +16,11 @@ interface CorporateItem {
   total: number;
 }
 
-interface IssueItem {
-  label: string;
-  inSla: number;
-  outSla: number;
+export interface TopKipsCorporate {
+  detail_category: string;
+  inSla: number,
+  outSla: number,
+  total: number;
 }
 
 interface P1CorporateCardProps {
@@ -27,42 +28,15 @@ interface P1CorporateCardProps {
   overSlaCount?: number;
   openCount?: number;
   topCorporates?: CorporateItem[];
-  topIssues?: IssueItem[];
+  topKips?: TopKipsCorporate[];
 }
-
-// --- Default Data Matching the Image ---
-const DEFAULT_CORPORATES: CorporateItem[] = [
-  { nama_perusahaan: "PT. PERTAMINA (PERSERO )", total: 27 },
-  { nama_perusahaan: "BANK PERMATA", total: 21 },
-  { nama_perusahaan: "PT SUMBER ALFARIA TRIJAYA TBK", total: 12 },
-  { nama_perusahaan: "SAYAP MAS UTAMA", total: 9 },
-  { nama_perusahaan: "PT. LOTTE SHOPPING INDONESIA", total: 6 },
-  { nama_perusahaan: "ORICA MINING SERVICES", total: 5 },
-  { nama_perusahaan: "PT AIA FINANCIAL", total: 5 },
-  { nama_perusahaan: "PT BANK MEGA TBK", total: 5 },
-  { nama_perusahaan: "PT PEGADAIAN ( PERSERO )", total: 4 },
-  { nama_perusahaan: "PT. EKA BOGAIINTI", total: 4 },
-];
-
-const DEFAULT_ISSUES: IssueItem[] = [
-  { label: "Kendala sinyal Lemah", inSla: 1, outSla: 15 },
-  { label: "Kendala tagihan", inSla: 0, outSla: 4 },
-  { label: "Pasang baru", inSla: 1, outSla: 3 },
-  { label: "Permintaan Network Event", inSla: 0, outSla: 4 },
-  { label: "Aktivasi kartu SIM", inSla: 1, outSla: 2 },
-  { label: "Coverage Network 2G/4G", inSla: 2, outSla: 1 },
-  { label: "Permintaan aktivasi paket", inSla: 0, outSla: 2 },
-  { label: "Berhenti Berlangganan atau Terminasi", inSla: 1, outSla: 1 },
-  { label: "Ganti kartu Hilang", inSla: 0, outSla: 2 },
-  { label: "Informasi status nomor", inSla: 0, outSla: 2 },
-];
 
 export function CorporateCard({
     isVip = false,
   overSlaCount,
   openCount,
   topCorporates,
-  topIssues,
+  topKips,
 }: P1CorporateCardProps) {
 
   // Helper for the colored stat boxes (Blue >6H, Red Open)
@@ -137,11 +111,11 @@ export function CorporateCard({
 
             {/* Chart List */}
             <div className="flex flex-col">
-              {topIssues?.map((issue, index) => (
+              {topKips?.map((issue, index) => (
                 <div key={index} className="flex items-center justify-end gap-2 text-[8pt]">
                   {/* Label */}
                   <span className="text-right text-slate-900 truncate flex-1">
-                    {issue.label}
+                    {issue.detail_category}
                   </span>
 
                   {/* Bars Container */}

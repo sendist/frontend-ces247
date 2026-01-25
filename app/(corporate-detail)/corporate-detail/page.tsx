@@ -78,20 +78,22 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         {/* Change col-span based on your layout needs */}
         <div className="grid grid-cols-1 gap-2">
-            <div className="flex flex-col gap-4">
-              <CorporateCard
-                isVip={true}
-                overSlaCount={corporateDetail?.vip?.stats.over3h}
-                openCount={corporateDetail?.vip?.stats.openTickets}
-                topCorporates={corporateDetail?.vip.topCorps}
-              />
-              <CorporateCard
-                isVip={false}
-                overSlaCount={corporateDetail?.pareto?.stats.over3h}
-                openCount={corporateDetail?.pareto?.stats.openTickets}
-                topCorporates={corporateDetail?.pareto.topCorps}
-              />
-            </div>
+          <div className="flex flex-col gap-4">
+            <CorporateCard
+              isVip={true}
+              overSlaCount={corporateDetail?.vip?.stats.over3h}
+              openCount={corporateDetail?.vip?.stats.openTickets}
+              topCorporates={corporateDetail?.vip.topCorps}
+              topKips={corporateDetail?.vip.topKips}
+            />
+            <CorporateCard
+              isVip={false}
+              overSlaCount={corporateDetail?.pareto?.stats.over3h}
+              openCount={corporateDetail?.pareto?.stats.openTickets}
+              topCorporates={corporateDetail?.pareto.topCorps}
+              topKips={corporateDetail?.pareto.topKips}
+            />
+          </div>
         </div>
 
         <SlaCustomerKipCard

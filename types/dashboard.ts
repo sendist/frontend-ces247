@@ -60,9 +60,17 @@ export interface TopCorp {
   total: number;
 }
 
+export interface TopKipsCorporate {
+  detail_category: string;
+  inSla: number,
+  outSla: number,
+  total: number;
+}
+
 export interface CategoryData {
   stats: Stats;
   topCorps: TopCorp[];
+  topKips: TopKipsCorporate[];
 }
 
 
