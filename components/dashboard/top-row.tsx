@@ -49,17 +49,26 @@ export function TopRow({ summary }: TopRowProps) {
     ? trendData[trendData.length - 2].value
     : 0;
 
+  const todaySla = hasTrendData ? trendData[trendData.length - 1].sla : "0";
+  const yesterdaySla = hasTrendData
+    ? trendData[trendData.length -2].sla
+    : "0";
+
   // Calculate the difference
   const trendDiff = todayValue - yesterdayValue;
-  console.log(trendDiff);
   const trendDirection = trendDiff >= 0 ? "up" : "down";
+
+  const slaDiff = parseFloat(todaySla) - parseFloat(yesterdaySla);
+  const slaDirection = slaDiff >= 0 ? "up" : "down";
+
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-16 gap-4 mb-4">
       <MetricCard
         title="SLA Today"
         value={summary ? `${summary.slaPercentage}%` : "..."}
         subtitle="Achieved"
-        trend={{ value: "1%", direction: "down" }}
+        trend={{ value: `${slaDiff.toFixed(2)}%`, direction: slaDirection }}
         icon={<CheckCircle className="h-6 w-6 text-green-500" />}
         className="bg-green-900/20 border-green-900/50 col-span-2"
         contentClassName="text-green-500"
