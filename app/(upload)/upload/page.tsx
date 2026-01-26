@@ -11,6 +11,8 @@ import {
   FileText,
   XCircle,
   Clock,
+  CalendarIcon,
+  RefreshCw,
 } from "lucide-react";
 import {
   Card,
@@ -22,6 +24,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner"; // Or your preferred toast library
 import { Badge } from "@/components/ui/badge";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { format, addDays, startOfDay } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
+import { DateRange } from "react-day-picker";
+import { CalendarDateRangePicker } from "@/components/dashboard/date-range-picker";
 
 interface JobTrack {
   jobId: string;
@@ -62,7 +74,14 @@ const REPORT_TYPES = [
 
 export default function UploadPage() {
   const [uploading, setUploading] = useState<string | null>(null);
+  const [syncing, setSyncing] = useState(false);
   const [activeJobs, setActiveJobs] = useState<JobTrack[]>([]);
+
+  // Date states for Manual Sync
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: addDays(new Date(), -1),
+    to: addDays(new Date(), -1),
+  });
 
   // 1. Polling Logic: Check status of 'active' jobs every 3 seconds
   useEffect(() => {
@@ -106,6 +125,33 @@ export default function UploadPage() {
           : j,
       ),
     );
+  };
+
+  // 2. Manual Sync API Call
+  const handleManualSync = async () => {
+    setSyncing(true);
+    const payload = {
+      startDate: format(dateRange?.from ?? "", "yyyy-MM-dd"),
+      endDate: format(dateRange?.to ?? "", "yyyy-MM-dd"),
+    };
+
+    try {
+      const response = await api.post("schedule/trigger-oca-sync", payload);
+
+      const newJob: JobTrack = {
+        jobId: response?.data.jobId,
+        filename: `OCA Sync (${payload.startDate})`,
+        reportType: "API Sync",
+        status: "active",
+      };
+
+      setActiveJobs((prev) => [newJob, ...prev]);
+      toast.success("OCA Sync triggered successfully");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Manual sync failed");
+    } finally {
+      setSyncing(false);
+    }
   };
 
   const handleFileUpload = async (
@@ -155,7 +201,7 @@ export default function UploadPage() {
 
   return (
     <div className="min-h-screen w-full bg-slate-950 p-6 text-slate-200">
-      <div className="mx-auto space-y-8">
+      <div className="mx-auto space-y-6">
         <div>
           <h2 className="text-3xl font-bold tracking-tight text-white">
             Report Management
@@ -223,14 +269,6 @@ export default function UploadPage() {
                       </div>
                     </Button>
                   </label>
-                </div>
-
-                {/* Helpful status indicator */}
-                <div className="mt-4 flex items-center gap-2 text-xs text-slate-500">
-                  <AlertCircle className="h-3 w-3" />
-                  <span>
-                    Files are processed asynchronously via background workers.
-                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -303,6 +341,34 @@ export default function UploadPage() {
               )}
             </div>
           </CardContent>
+        </Card>
+      </div>
+      <div className="mt-4">
+        {/* Manual Sync Control */}
+        <Card className="bg-slate-900 border-slate-800 p-4 flex flex-col sm:flex-row items-center gap-3">
+          <div className="flex flex-col">
+            <span className="text-[10px] uppercase font-bold text-slate-500 mb-1 ml-1">
+              OCA Manual Report Sync Period
+            </span>
+            <div className="flex items-center gap-2">
+              <CalendarDateRangePicker
+                date={dateRange}
+                setDate={setDateRange}
+              />
+              <Button
+                onClick={handleManualSync}
+                disabled={syncing || !dateRange?.from}
+                className="bg-blue-600 hover:bg-blue-500 text-white"
+              >
+                {syncing ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                )}
+                Trigger Sync
+              </Button>
+            </div>
+          </div>
         </Card>
       </div>
     </div>
