@@ -10,6 +10,7 @@ import {
   Menu,
   ShoppingBasket,
   TicketPercent,
+  UserRoundPlus,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -75,6 +76,12 @@ export function Sidebar() {
       icon: ShoppingBasket,
       roles: ["USER", "ADMIN"],
     },
+    {
+      title: "Create User Account",
+      href: "/register",
+      icon: UserRoundPlus,
+      roles: ["ADMIN"],
+    }
   ];
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);

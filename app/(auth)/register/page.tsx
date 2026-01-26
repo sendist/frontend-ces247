@@ -50,7 +50,6 @@ export default function RegisterPage() {
     },
     onSuccess: () => {
       toast("Account created!", { description: "Please login with your new account." });
-      router.push("/login");
     },
     onError: (error: any) => {
       const msg = error.response?.data?.message || "Registration failed";
@@ -116,14 +115,6 @@ export default function RegisterPage() {
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex justify-center">
-        <p className="text-sm text-gray-500">
-          Already have an account?{" "}
-          <Link href="/login" className="text-blue-600 hover:underline">
-            Login
-          </Link>
-        </p>
-      </CardFooter>
     </Card>
   );
 }
