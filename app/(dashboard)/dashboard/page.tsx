@@ -10,16 +10,22 @@ import {
   MessageSquare,
   Phone,
   Globe,
+  Loader2,
+  DatabaseZap,
+  RefreshCw,
 } from "lucide-react";
 import { CalendarDateRangePicker } from "@/components/dashboard/date-range-picker";
 import { addDays, startOfDay } from "date-fns";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useDashboardData } from "@/hooks/use-dashboard-data";
 import { ChannelData } from "@/types/dashboard"; // Ensure this is imported
 import IncidentWidget from "@/components/dashboard/incident-card";
 import { normalizeDateRange } from "@/lib/utils";
 import { fromZonedTime } from "date-fns-tz";
+import { Button } from "@/components/ui/button";
+import api from "@/lib/api";
+import { toast } from "sonner";
 
 // Helper to map backend string to Icon
 const getChannelIcon = (channelName: string) => {
@@ -37,10 +43,61 @@ const getChannelIcon = (channelName: string) => {
 };
 
 export default function DashboardPage() {
+  const [syncingTickets, setSyncingTickets] = useState(false); // For the Daily Ticket sync
+  const [syncingJobId, setSyncingJobId] = useState<string | null>(null);
+  const [isJobProcessing, setIsJobProcessing] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(),
     to: new Date(),
   });
+
+  // 1. Polling Effect: Runs only when we have a jobId to track
+  useEffect(() => {
+    if (!syncingJobId) return;
+
+    const checkStatus = async () => {
+      try {
+        const { data } = await api.get(`schedule/status/${syncingJobId}`);
+        
+        if (data.status === "completed") {
+          toast.success("Sync Complete", { description: "Dashboard data updated." });
+          setSyncingJobId(null);
+          setIsJobProcessing(false);
+          // Optional: trigger a data refresh for the dashboard charts
+        } else if (data.status === "failed") {
+          toast.error("Sync Failed", { description: data.error });
+          setSyncingJobId(null);
+          setIsJobProcessing(false);
+        }
+      } catch (err) {
+        console.error("Status check failed", err);
+      }
+    };
+
+    const interval = setInterval(checkStatus, 3000); // Poll every 3 seconds
+    return () => clearInterval(interval);
+  }, [syncingJobId]);
+
+// 2. Updated Trigger Function
+  const handleSyncDailyOca = async () => {
+    setIsJobProcessing(true);
+    try {
+      const response = await api.post("schedule/sync-daily-oca");
+      
+      if (response.data.jobId) {
+        setSyncingJobId(response.data.jobId);
+        toast.info("Sync Started", { description: "Fetching latest batches..." });
+      } else {
+        // Fallback if no jobId returned
+        toast.success(response.data.message);
+        setIsJobProcessing(false);
+      }
+    } catch (error: any) {
+      toast.error("Failed to trigger daily sync");
+      setIsJobProcessing(false);
+    }
+  };
+
 
   const normalizedDateRange = useMemo(() => {
     if (!dateRange?.from) return undefined;
@@ -117,6 +174,28 @@ export default function DashboardPage() {
           Dashboard
         </h2>
         <div className="flex items-center space-x-2">
+          {/* ACTION 1: DAILY TICKET SYNC (THE NEW BUTTON) */}
+          <div className="flex flex-col gap-1">
+{/* ACTION BUTTON */}
+          <Button
+            onClick={handleSyncDailyOca}
+            disabled={isJobProcessing}
+            variant="outline"
+            className={`bg-slate-800 border-slate-700 hover:bg-slate-700 text-white transition-all ${
+              isJobProcessing ? "border-blue-500/50 bg-blue-500/10" : ""
+            }`}
+          >
+            {isJobProcessing ? (
+              <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
+            ) : (
+              <RefreshCw className="h-4 w-4 text-blue-500" />
+            )}
+            {/* Optional text for better UX on desktop */}
+            <span className="ml-2 hidden lg:inline">
+              {isJobProcessing ? "Syncing..." : "Sync Today"}
+            </span>
+          </Button>
+          </div>
           <CalendarDateRangePicker date={dateRange} setDate={setDateRange} />
         </div>
       </div>
