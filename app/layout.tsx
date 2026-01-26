@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Blog App",
+  title: "ces247",
   description: "A full-stack Blog / Content Management System built to demonstrate authentication, CRUD operations, role-based access control, REST API integration, and clean frontend & backend architecture.",
 };
 

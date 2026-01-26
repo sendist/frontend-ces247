@@ -65,7 +65,7 @@ export default function RegisterPage() {
     <Card>
       <CardHeader>
         <CardTitle>Register</CardTitle>
-        <CardDescription>Create a new account to start posting.</CardDescription>
+        <CardDescription>Create a new user account.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
