@@ -30,6 +30,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useAuth } from "@/hooks/use-auth";
 
 // --- Types ---
 interface IncidentProps {
@@ -47,6 +48,8 @@ const IncidentCard = ({
   data: IncidentProps;
   onResolve: (id: string) => void;
 }) => {
+    const { user, isLoading } = useAuth(true);
+
   return (
     <div
       className={`min-w-[300px] max-w-[350px] flex-shrink-0 flex flex-col gap-2 border-r border-slate-300 last:border-r-0 px-4 first:pl-0 group relative ${data.status === "solved" ? "opacity-50 grayscale" : ""}`}
@@ -61,7 +64,7 @@ const IncidentCard = ({
         </div>
 
         {/* Resolve Button (Only show if active) */}
-        {data.status === "active" && (
+        {(data.status === "active" && user?.role === 'ADMIN') && (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -101,6 +104,8 @@ const IncidentCard = ({
 
 // --- 2. The Main Widget ---
 export default function IncidentWidget() {
+  const { user, isLoading } = useAuth(true);
+
   const [showSolved, setShowSolved] = useState(false);
   const [incidents, setIncidents] = useState<IncidentProps[]>([
     {
@@ -181,72 +186,74 @@ export default function IncidentWidget() {
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
-            {/* Toggle Show Solved */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowSolved(!showSolved)}
-              className="text-white/70 hover:text-white hover:bg-white/10 h-7 text-xs"
-            >
-              {showSolved ? (
-                <EyeOff className="w-3.5 h-3.5 mr-1" />
-              ) : (
-                <Eye className="w-3.5 h-3.5 mr-1" />
-              )}
-              {showSolved ? "Hide Solved" : "Show History"}
-            </Button>
+          {user?.role === "ADMIN" && (
+            <div className="flex items-center gap-2">
+              {/* Toggle Show Solved */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowSolved(!showSolved)}
+                className="text-white/70 hover:text-white hover:bg-white/10 h-7 text-xs"
+              >
+                {showSolved ? (
+                  <EyeOff className="w-3.5 h-3.5 mr-1" />
+                ) : (
+                  <Eye className="w-3.5 h-3.5 mr-1" />
+                )}
+                {showSolved ? "Hide Solved" : "Show History"}
+              </Button>
 
-            <div className="h-4 w-px bg-white/30 mx-1" />
+              <div className="h-4 w-px bg-white/30 mx-1" />
 
-            {/* Add Button */}
-            <Dialog open={isOpen} onOpenChange={setIsOpen}>
-              <DialogTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-white hover:bg-white/20 hover:text-white h-7 px-2 font-medium"
-                >
-                  <Plus className="w-4 h-4 mr-1" /> Add Incident
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px]">
-                <DialogHeader>
-                  <DialogTitle>Add New Incident</DialogTitle>
-                  <DialogDescription>
-                    Formatting (spaces/tabs) in the description will be
-                    preserved.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid gap-2">
-                    <Label htmlFor="title">Issue Title</Label>
-                    <Input
-                      id="title"
-                      placeholder="e.g. SVC Issue - Error 407"
-                      value={newTitle}
-                      onChange={(e) => setNewTitle(e.target.value)}
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="desc">Description</Label>
-                    <Textarea
-                      id="desc"
-                      placeholder="Type details here..."
-                      className="font-mono text-sm min-h-[150px]"
-                      value={newDesc}
-                      onChange={(e) => setNewDesc(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button type="submit" onClick={handleAdd}>
-                    Save Incident
+              {/* Add Button */}
+              <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-white hover:bg-white/20 hover:text-white h-7 px-2 font-medium"
+                  >
+                    <Plus className="w-4 h-4 mr-1" /> Add Incident
                   </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          </div>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[500px]">
+                  <DialogHeader>
+                    <DialogTitle>Add New Incident</DialogTitle>
+                    <DialogDescription>
+                      Formatting (spaces/tabs) in the description will be
+                      preserved.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="title">Issue Title</Label>
+                      <Input
+                        id="title"
+                        placeholder="e.g. SVC Issue - Error 407"
+                        value={newTitle}
+                        onChange={(e) => setNewTitle(e.target.value)}
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="desc">Description</Label>
+                      <Textarea
+                        id="desc"
+                        placeholder="Type details here..."
+                        className="font-mono text-sm min-h-[150px]"
+                        value={newDesc}
+                        onChange={(e) => setNewDesc(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button type="submit" onClick={handleAdd}>
+                      Save Incident
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          )}
         </div>
       </div>
 
