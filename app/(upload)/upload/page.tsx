@@ -200,7 +200,7 @@ export default function UploadPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-slate-950 p-6 text-slate-200">
+    <div className="min-h-screen w-full bg-slate-950 mt-12 lg:mt-0 p-6 text-slate-200">
       <div className="mx-auto space-y-6">
         <div>
           <h2 className="text-3xl font-bold tracking-tight text-white">
@@ -350,7 +350,7 @@ export default function UploadPage() {
             <span className="text-[10px] uppercase font-bold text-slate-500 mb-1 ml-1">
               OCA Manual Report Sync Period
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col md:flex-row md:items-center gap-2">
               <CalendarDateRangePicker
                 date={dateRange}
                 setDate={setDateRange}

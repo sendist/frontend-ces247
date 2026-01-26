@@ -29,10 +29,8 @@ export default function UploadLayout({
     <div className="flex h-screen overflow-hidden">
       <Sidebar />
 
-      <main className="flex-1 overflow-y bg-slate-950 p-4 dark:bg-black">
-        <div className="flex h-screen w-full items-center justify-center bg-slate-950 dark:bg-gray-900">
-          <div className="w-full px-4">{children}</div>
-        </div>
+      <main className="flex-1 overflow-y-auto bg-slate-950 p-4 dark:bg-black">
+          {children}
       </main>
     </div>
   );
