@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Building2,
+  FileUp,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -75,6 +76,12 @@ export function Sidebar() {
       href: "/product-detail",
       icon: ShoppingBasket,
       roles: ["USER", "ADMIN"],
+    },
+    {
+      title: "Upload Report",
+      href: "/upload",
+      icon: FileUp,
+      roles: ["ADMIN"],
     },
     {
       title: "Create User Account",
