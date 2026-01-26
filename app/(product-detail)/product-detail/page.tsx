@@ -52,14 +52,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-        {/* {isLoading ? (
-          <p className="text-slate-500 col-span-full text-center py-10">
-            Loading dashboard data...
-          </p>
-        ) : ( */}
-        <>
+      <div className="grid grid-cols-1 lg:grid-cols-8 gap-4">
+
           <ProductCard
+            className="col-span-1 lg:col-span-3"
             product="Connectivity"
             isLoading={isLoading}
             data={
@@ -78,6 +74,7 @@ export default function DashboardPage() {
             }
           />
           <ProductCard
+            className="col-span-1 lg:col-span-3"
             product="Solution"
             isLoading={isLoading}
             data={
@@ -94,6 +91,7 @@ export default function DashboardPage() {
             }
           />
           <ProductCard
+            className="col-span-1 lg:col-span-2"
             product="DAds"
             isLoading={isLoading}
             data={
@@ -109,8 +107,6 @@ export default function DashboardPage() {
               }
             }
           />
-        </>
-        {/* )} */}
       </div>
     </div>
   );

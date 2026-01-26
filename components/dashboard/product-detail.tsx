@@ -28,17 +28,19 @@ interface ProductDetailProps {
   product: String;
   data: ProductDetail;
   isLoading?: boolean; // <--- NEW PROP
+  className?: string;
 }
 
 export function ProductCard({
   product,
   data,
   isLoading = false,
+  className,
 }: ProductDetailProps) {
   // 1. SKELETON RENDER (Shows when isLoading is true)
   if (isLoading) {
     return (
-      <Card className="w-full max-w-4xl border-none shadow-sm bg-gray-50/50">
+      <Card className={cn("w-full max-w-4xl border-none shadow-sm bg-gray-50/50", className)}>
         <CardHeader className="flex flex-row items-center gap-2">
           {/* Icon Skeleton */}
           <div className="h-6 w-6 rounded-full bg-slate-200 animate-pulse" />
@@ -107,7 +109,7 @@ export function ProductCard({
     Math.max(...connectivityData.topCategories.map((c) => c.total)) || 1; // Prevent division by zero
 
   return (
-    <Card className="w-full max-w-4xl border-none shadow-sm bg-gray-50/50">
+    <Card className={cn("w-full max-w-4xl border-none shadow-sm bg-gray-50/50", className)}>
       <CardHeader className="flex flex-row items-center gap-2">
         {getProductIcon(product)}{" "}
         <CardTitle className="text-md font-bold text-slate-900">
