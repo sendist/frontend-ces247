@@ -19,6 +19,8 @@ import { useDashboardData } from "@/hooks/use-dashboard-data";
 import { ChannelData } from "@/types/dashboard"; // Ensure this is imported
 import { ChannelBreakdown } from "@/components/dashboard/channel-breakdown";
 import { fromZonedTime } from "date-fns-tz";
+import { DataTable } from "@/components/dashboard/data-table";
+import { EscalationCard } from "@/components/dashboard/escalation-widget";
 
 // Helper to map backend string to Icon
 const getChannelIcon = (channelName: string) => {
@@ -34,6 +36,46 @@ const getChannelIcon = (channelName: string) => {
     return <Phone className="text-blue-500" />;
   return <Globe className="text-slate-500" />;
 };
+
+const columns = [
+  { key: "name", label: "Date" },
+  { key: "total", label: "ID Ticket" },
+  { key: "ticket", label: "Duration" },
+  { key: "pctFcr", label: "act_name" },
+];
+
+const dummy = [
+  {
+    name: "Permintaan PDF Billing",
+    total: 14,
+    ticket: 0,
+    pctFcr: "64.29",
+  },
+  {
+    name: "Permintaan aktivasi paket",
+    total: 10,
+    ticket: 0,
+    pctFcr: "100",
+  },
+  {
+    name: "Informasi Cara Berlangganan",
+    total: 8,
+    ticket: 0,
+    pctFcr: "100",
+  },
+  {
+    name: "Re-aktivasi",
+    total: 7,
+    ticket: 0,
+    pctFcr: "100",
+  },
+  {
+    name: "Aktivasi kartu SIM",
+    total: 6,
+    ticket: 0,
+    pctFcr: "100",
+  },
+];
 
 export default function DashboardPage() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -155,6 +197,70 @@ export default function DashboardPage() {
           )}
         </div>
       </div>
+
+      <div className="mt-4">
+        <EscalationGrid dateRange={normalizedDateRange} />
+      </div>
+    </div>
+  );
+}
+
+const EBO_COLUMNS = [
+  { key: "date", label: "Date" },
+  { key: "idTicket", label: "ID Ticket" },
+  { key: "idCase", label: "ID Case" },
+  { key: "duration", label: "Duration" },
+  { key: "act_name", label: "act_name" },
+  { key: "unit_id", label: "unit_id" },
+];
+
+const BILLCO_COLUMNS = [
+  { key: "date", label: "Date" },
+  { key: "idTicket", label: "ID Ticket" },
+  { key: "kip", label: "KIP" },
+  { key: "lob", label: "LOB" },
+];
+
+function EscalationGrid(dateRange: any) {
+  return (
+    <div className="grid grid-cols-1 xl:grid-cols-10 gap-2 ">
+      <EscalationCard
+        className="col-span-3"
+        title="EBO"
+        type="ebo"
+        apiUrl="/dashboard/ebo-escalation"
+        dateRange={dateRange}
+        columns={EBO_COLUMNS}
+      />
+      <EscalationCard
+        className="col-span-3"
+        title="GTM"
+        type="gtm"
+        apiUrl="/dashboard/gtm-escalation"
+        dateRange={dateRange}
+        columns={EBO_COLUMNS}
+      />
+      <EscalationCard
+        className="col-span-2"
+        title="Billco"
+        type="billco"
+        apiUrl="/dashboard/billco-escalation"
+        dateRange={dateRange}
+        columns={BILLCO_COLUMNS}
+      />
+      <EscalationCard
+        className="col-span-2"
+        title="IT"
+        type="it"
+        apiUrl="/dashboard/it-escalation"
+        dateRange={dateRange}
+        columns={[
+          { key: "date", label: "Date" },
+          { key: "idTicket", label: "ID Ticket" },
+          { key: "idRemedy", label: "ID Remedy" },
+          { key: "duration", label: "Duration" },
+        ]}
+      />
     </div>
   );
 }
