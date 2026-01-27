@@ -6,6 +6,16 @@ export interface DashboardSummary {
   slaPercentage: string;
   dailyTrend: DailyTrend[];
   hourlyTrend: HourlyTrend[];
+  csatScore: CsatScore;
+}
+
+export interface CsatScore {
+  date: string;
+  totalsurvey: number;
+  totaldijawab: number;
+  totaljawaban45: number;
+  scorecsat: number;
+  persencsat: number;
 }
 
 export interface DailyTrend {
@@ -62,8 +72,8 @@ export interface TopCorp {
 
 export interface TopKipsCorporate {
   detail_category: string;
-  inSla: number,
-  outSla: number,
+  inSla: number;
+  outSla: number;
   total: number;
 }
 
@@ -72,7 +82,6 @@ export interface CategoryData {
   topCorps: TopCorp[];
   topKips: TopKipsCorporate[];
 }
-
 
 export interface CorporateDetailResponse {
   vip: CategoryData;
@@ -128,11 +137,11 @@ export interface CompanyKips {
 }
 
 export interface CompanyKipsResponse {
-  data: CompanyKips[],
+  data: CompanyKips[];
   meta: {
-    page: number,
-    limit: number,
-    total: number,
-    totalPages: number
-  }
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
 }

@@ -16,6 +16,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { DashboardSummary } from "@/types/dashboard";
+import { CsatMetricCard } from "./csat-metric-card";
 
 const dailyTrendData = [
   { date: "1", value: 1000 },
@@ -50,9 +51,7 @@ export function TopRow({ summary }: TopRowProps) {
     : 0;
 
   const todaySla = hasTrendData ? trendData[trendData.length - 1].sla : "0";
-  const yesterdaySla = hasTrendData
-    ? trendData[trendData.length -2].sla
-    : "0";
+  const yesterdaySla = hasTrendData ? trendData[trendData.length - 2].sla : "0";
 
   // Calculate the difference
   const trendDiff = todayValue - yesterdayValue;
@@ -61,20 +60,19 @@ export function TopRow({ summary }: TopRowProps) {
   const slaDiff = parseFloat(todaySla) - parseFloat(yesterdaySla);
   const slaDirection = slaDiff >= 0 ? "up" : "down";
 
-
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-16 gap-4 mb-4">
+    <div className="grid grid-cols-1 lg:grid-cols-32 gap-4 mb-4">
       <MetricCard
         title="SLA Today"
         value={summary ? `${summary.slaPercentage}%` : "..."}
         subtitle="Achieved"
         trend={{ value: `${slaDiff.toFixed(2)}%`, direction: slaDirection }}
         icon={<CheckCircle className="h-6 w-6 text-green-500" />}
-        className="bg-green-900/20 border-green-900/50 col-span-2"
+        className="bg-green-900/20 border-green-900/50 lg:col-span-4"
         contentClassName="text-green-500"
       />
 
-      <Card className="bg-slate-800 border-slate-700 col-span-2 lg:col-span-4">
+      <Card className="bg-slate-800 border-slate-700 col-span-1 lg:col-span-7">
         <CardHeader className="pb-2 -m-2">
           <CardTitle className="text-sm font-medium text-slate-300">
             Daily Trend
@@ -125,7 +123,7 @@ export function TopRow({ summary }: TopRowProps) {
         </CardContent>
       </Card>
 
-      <Card className="bg-slate-800 border-slate-700 col-span-2 lg:col-span-5 pb-0">
+      <Card className="bg-slate-800 border-slate-700 col-span-1 lg:col-span-9 pb-0">
         <CardHeader className="pb-2 -m-2 flex flex-row items-center justify-between gap-4 space-y-0">
           {/* 1. Title Section */}
           <CardTitle className="text-sm font-medium text-slate-300">
@@ -204,7 +202,7 @@ export function TopRow({ summary }: TopRowProps) {
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-3 gap-2 col-span-2 lg:col-span-5">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 col-span-1 lg:col-span-12">
         <MetricCard
           title="Created today"
           value={summary ? summary.totalCreated.toLocaleString() : "..."}
@@ -225,6 +223,14 @@ export function TopRow({ summary }: TopRowProps) {
           value="..."
           icon={<AlertCircle className="h-6 w-6 text-red-500" />}
           className="col-span-1 bg-red-900/20 border-red-900/50"
+        />
+        <CsatMetricCard
+          title="CSAT"
+          value={summary?.csatScore?.scorecsat ?? 0}
+          showChart={true}
+          chartColor="#10b981" // emerald-500
+          trend={{ value: "12%", direction: "up" }}
+          className="col-span-1"
         />
       </div>
     </div>

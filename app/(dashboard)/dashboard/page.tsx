@@ -202,7 +202,7 @@ export default function DashboardPage() {
 
       <TopRow summary={summary} />
 
-      <div className="xl:grid xl:grid-cols-8 gap-4">
+      <div className="lg:grid lg:grid-cols-8 gap-4">
         <LeftColumn summary={summary} />
 
         {/* Change col-span based on your layout needs */}

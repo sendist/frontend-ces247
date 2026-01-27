@@ -48,7 +48,7 @@ const IncidentCard = ({
   data: IncidentProps;
   onResolve: (id: string) => void;
 }) => {
-    const { user, isLoading } = useAuth(true);
+  const { user, isLoading } = useAuth(true);
 
   return (
     <div
@@ -64,7 +64,7 @@ const IncidentCard = ({
         </div>
 
         {/* Resolve Button (Only show if active) */}
-        {(data.status === "active" && user?.role === 'ADMIN') && (
+        {data.status === "active" && user?.role === "ADMIN" && (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -176,7 +176,7 @@ export default function IncidentWidget() {
         </div>
 
         {/* Red Bar */}
-        <div className="bg-[#cc0000] text-white py-2 pl-12 pr-4 ml-4 rounded-sm shadow-sm flex justify-between items-center">
+        <div className="bg-[#cc0000] text-white py-2 pl-12 pr-4 ml-4 rounded-sm shadow-sm flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center gap-4">
             <h2 className="font-bold text-lg tracking-tight">
               Incident Information
@@ -187,24 +187,25 @@ export default function IncidentWidget() {
           </div>
 
           {user?.role === "ADMIN" && (
-            <div className="flex items-center gap-2">
-              {/* Toggle Show Solved */}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowSolved(!showSolved)}
-                className="text-white/70 hover:text-white hover:bg-white/10 h-7 text-xs"
-              >
-                {showSolved ? (
-                  <EyeOff className="w-3.5 h-3.5 mr-1" />
-                ) : (
-                  <Eye className="w-3.5 h-3.5 mr-1" />
-                )}
-                {showSolved ? "Hide Solved" : "Show History"}
-              </Button>
+            <div className="flex flex-col sm:flex-row items-center gap-2">
+              <div className="flex items-center">
+                {/* Toggle Show Solved */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowSolved(!showSolved)}
+                  className="text-white/70 hover:text-white hover:bg-white/10 h-7 text-xs"
+                >
+                  {showSolved ? (
+                    <EyeOff className="w-3.5 h-3.5 mr-1" />
+                  ) : (
+                    <Eye className="w-3.5 h-3.5 mr-1" />
+                  )}
+                  {showSolved ? "Hide Solved" : "Show History"}
+                </Button>
 
-              <div className="h-4 w-px bg-white/30 mx-1" />
-
+                <div className="h-4 w-px bg-white/30 mx-1" />
+              </div>
               {/* Add Button */}
               <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogTrigger asChild>

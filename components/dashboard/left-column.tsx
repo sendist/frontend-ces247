@@ -16,7 +16,6 @@ interface LeftColumnProps {
 }
 
 export function LeftColumn({ summary }: LeftColumnProps) {
-
   if (!summary) {
     return (
       <div className="flex flex-col gap-4">
@@ -26,7 +25,7 @@ export function LeftColumn({ summary }: LeftColumnProps) {
     );
   }
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mb-4 lg:mb-0">
       <Card className="bg-red-900/20 border-red-900/50 text-center">
         <CardHeader className="pb-2 py-4">
           <CardTitle className="text-2xl font-bold text-red-500">
@@ -56,7 +55,7 @@ export function LeftColumn({ summary }: LeftColumnProps) {
             Priority (Unresolved)
           </CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-2 gap-1 p-2 -mt-4">
+        <CardContent className="grid grid-cols-2 justify-items-center gap-1 p-2 -mt-4">
           {priorityData.map((item, index) => (
             <Badge
               key={index}
