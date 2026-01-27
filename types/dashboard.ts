@@ -7,6 +7,15 @@ export interface DashboardSummary {
   dailyTrend: DailyTrend[];
   hourlyTrend: HourlyTrend[];
   csatScore: CsatScore;
+  priority: Priority;
+}
+
+export interface Priority {
+  vip: number;
+  urgent: number;
+  pareto: number;
+  roaming: number;
+  extra: number;
 }
 
 export interface CsatScore {

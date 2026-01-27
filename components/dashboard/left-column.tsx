@@ -56,18 +56,49 @@ export function LeftColumn({ summary }: LeftColumnProps) {
           </CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-2 justify-items-center gap-1 p-2 -mt-4">
-          {priorityData.map((item, index) => (
-            <Badge
-              key={index}
-              variant="secondary"
-              className={`${item.color} text-white hover:${item.color}/90 flex flex-col items-center py-1 rounded-md h-12 w-16`}
-            >
-              <span className="text-xs font-normal">{item.label}</span>
-              <span className="text-md font-bold">{item.value}</span>
-            </Badge>
-          ))}
+          <BadgePriority
+            label="Roaming"
+            value={summary?.priority?.roaming ?? 0}
+          />
+          <BadgePriority
+            label="Extra Quota"
+            value={summary?.priority?.extra ?? 0}
+          />
+          <BadgePriority
+            label="CC"
+            value={0}
+          />
+          <BadgePriority
+            label="VIP"
+            value={summary?.priority?.vip ?? 0}
+          />
+          <BadgePriority
+            label="P1"
+            value={summary?.priority?.pareto ?? 0}
+          />
+          <BadgePriority
+            label="Urgent"
+            value={summary?.priority?.urgent ?? 0}
+          />
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+interface BadgePriorityProps {
+  label: string;
+  value: number;
+}
+
+function BadgePriority({ label, value }: BadgePriorityProps) {
+  return (
+    <Badge
+      variant="secondary"
+      className={`bg-red-600 text-white hover:bg-red-600/90 flex flex-col items-center py-1 rounded-md h-12 w-16`}
+    >
+      <span className="text-xs font-normal">{label}</span>
+      <span className="text-md font-bold">{value}</span>
+    </Badge>
   );
 }
