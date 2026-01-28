@@ -12,23 +12,26 @@ interface EscalationResponse {
 }
 
 interface UseEscalationProps {
-  url: string;
+  apiUrl: string;
   page?: number;
   search?: string;
   dateRange?: {
-    from?: string;
-    to?: string;
+    from: string;
+    to: string;
   };
 }
 
-export function useEscalationData(apiUrl: string, page: number, search: string, {
- dateRange
+export function useEscalationData({
+  apiUrl,
+  page,
+  search,
+  dateRange,
 }: UseEscalationProps) {
   const queryParams = {
     startDate: dateRange?.from ? dateRange.from : undefined,
     endDate: dateRange?.to ? dateRange.to : undefined,
     page: page,
-    search: search
+    search: search,
   };
   const [data, setData] = useState<EscalationResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -49,7 +52,7 @@ export function useEscalationData(apiUrl: string, page: number, search: string, 
     };
 
     fetchData();
-  }, [apiUrl, page, search]);
+  }, [apiUrl, page, search, dateRange?.from, dateRange?.to]);
 
   return { data, isLoading };
 }

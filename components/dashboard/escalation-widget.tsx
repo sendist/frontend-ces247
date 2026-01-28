@@ -27,7 +27,10 @@ interface EscalationCardProps {
   apiUrl: string;
   columns: { key: string; label: string }[];
   className?: string;
-  dateRange?: any;
+  dateRange?: {
+    from?: string;
+    to?: string;
+  };
 }
 
 export function EscalationCard({
@@ -40,13 +43,17 @@ export function EscalationCard({
 }: EscalationCardProps) {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const safeDateRange =
+    dateRange?.from && dateRange?.to
+      ? { from: dateRange.from, to: dateRange.to }
+      : undefined;
 
-  const { data, isLoading } = useEscalationData(
+  const { data, isLoading } = useEscalationData({
     apiUrl,
     page,
     search,
-    dateRange,
-  );
+    dateRange: safeDateRange,
+  });
 
   // Fallback values if data hasn't arrived yet
   const list = data?.data || [];

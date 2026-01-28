@@ -221,7 +221,14 @@ const BILLCO_COLUMNS = [
   { key: "lob", label: "LOB" },
 ];
 
-function EscalationGrid(dateRange: any) {
+function EscalationGrid({
+  dateRange,
+}: {
+  dateRange?: {
+    from?: string;
+    to?: string;
+  };
+}) {
   return (
     <div className="grid grid-cols-1 xl:grid-cols-10 gap-2 ">
       <EscalationCard

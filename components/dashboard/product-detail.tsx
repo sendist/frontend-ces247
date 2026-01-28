@@ -231,6 +231,12 @@ export function ProductCard({
                   domain={[0, 120]}
                 />
                 <Tooltip
+                  formatter={(value, name) => {
+    if (name === "sla") {
+      return [`${value}%`, "SLA"];
+    }
+    return [value, name];
+  }}
                   contentStyle={{
                     borderRadius: "8px",
                     border: "none",
@@ -263,13 +269,13 @@ export function ProductCard({
                   strokeWidth={3}
                   dot={{ r: 3, fill: "#9ca3af", strokeWidth: 0 }}
                 >
-                  <LabelList
+                  {/* <LabelList
                     dataKey="sla"
                     position="top"
                     offset={10}
                     formatter={(val: any) => `${val}%`}
                     style={{ fill: "#6b7280", fontSize: "8px" }}
-                  />
+                  /> */}
                 </Line>
               </ComposedChart>
             </ResponsiveContainer>
