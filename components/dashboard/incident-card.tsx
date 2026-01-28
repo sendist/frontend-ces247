@@ -31,28 +31,31 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/use-auth";
+import { IncidentReport, useIncidents } from "@/hooks/use-incident";
 
 // --- Types ---
 interface IncidentProps {
   id: string;
   title: string;
   description: string;
-  status: "active" | "solved"; // Added status field
+  isActive: boolean; // Added status field
 }
 
 // --- 1. The Individual Incident Card ---
 const IncidentCard = ({
   data,
   onResolve,
+  isSolving,
 }: {
-  data: IncidentProps;
-  onResolve: (id: string) => void;
+  data: IncidentReport;
+  onResolve: (id: number) => void;
+  isSolving?: boolean;
 }) => {
   const { user, isLoading } = useAuth(true);
 
   return (
     <div
-      className={`min-w-[300px] max-w-[350px] flex-shrink-0 flex flex-col gap-2 border-r border-slate-300 last:border-r-0 px-4 first:pl-0 group relative ${data.status === "solved" ? "opacity-50 grayscale" : ""}`}
+      className={`min-w-[300px] max-w-[350px] flex-shrink-0 flex flex-col gap-2 border-r border-slate-300 last:border-r-0 px-4 first:pl-0 group relative ${!data.isActive ? "opacity-50 grayscale" : ""}`}
     >
       {/* Title & Action Row */}
       <div className="flex justify-between items-start mb-2">
@@ -64,7 +67,7 @@ const IncidentCard = ({
         </div>
 
         {/* Resolve Button (Only show if active) */}
-        {data.status === "active" && user?.role === "ADMIN" && (
+        {data.isActive && user?.role === "ADMIN" && (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -91,7 +94,7 @@ const IncidentCard = ({
       </div>
 
       {/* Solved Watermark */}
-      {data.status === "solved" && (
+      {!data.isActive && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="bg-green-100/80 border-2 border-green-500 text-green-700 font-bold px-4 py-1 rounded rotate-[-15deg] shadow-lg">
             SOLVED
@@ -104,65 +107,64 @@ const IncidentCard = ({
 
 // --- 2. The Main Widget ---
 export default function IncidentWidget() {
-  const { user, isLoading } = useAuth(true);
+  const { user } = useAuth(true);
 
   const [showSolved, setShowSolved] = useState(false);
-  const [incidents, setIncidents] = useState<IncidentProps[]>([
-    {
-      id: "1",
-      title: "IoT CMP – APN Issue",
-      status: "active",
-      description: `- APN: M2MUP2DBTN (Scada PLN Banten) degrade KPI
-- Start Time: 24 Nov 2025 10:00 WIB
-- Degradation KPI:
-    - Subs: 750 out of 2.000 down
-    - Event & session activations spike
-    - Success Rate drop to 50%`,
-    },
-    {
-      id: "2",
-      title: "IAAS – Site Issue",
-      status: "active",
-      description: `R01 B2B :
-- Major / IAAS / IM-20251126-00004500
-  117 hours 31 minutes
-  PLN power outage at Aceh Area due to Banjir & Longsor (Force Majeure)`,
-    },
-  ]);
+  //   const [incidents, setIncidents] = useState<IncidentProps[]>([
+  //     {
+  //       id: "1",
+  //       title: "IoT CMP – APN Issue",
+  //       isActive: true,
+  //       description: `- APN: M2MUP2DBTN (Scada PLN Banten) degrade KPI
+  // - Start Time: 24 Nov 2025 10:00 WIB
+  // - Degradation KPI:
+  //     - Subs: 750 out of 2.000 down
+  //     - Event & session activations spike
+  //     - Success Rate drop to 50%`,
+  //     },
+  //     {
+  //       id: "2",
+  //       title: "IAAS – Site Issue",
+  //       isActive: true,
+  //       description: `R01 B2B :
+  // - Major / IAAS / IM-20251126-00004500
+  //   117 hours 31 minutes
+  //   PLN power outage at Aceh Area due to Banjir & Longsor (Force Majeure)`,
+  //     },
+  //   ]);
+
+  const { incidents, isLoading, createIncident, solveIncident, isSolving } =
+    useIncidents("active");
+
+  const { incidents: historyIncidents, isLoading: isLoadingHistory } =
+    useIncidents("inactive");
 
   const [isOpen, setIsOpen] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newDesc, setNewDesc] = useState("");
 
-  const handleAdd = () => {
+  const handleAdd = async (e: React.FormEvent) => {
     if (!newTitle || !newDesc) return;
-
-    const newIncident: IncidentProps = {
-      id: Math.random().toString(36).substr(2, 9),
-      title: newTitle,
-      description: newDesc,
-      status: "active",
-    };
-
-    setIncidents([...incidents, newIncident]);
+    e.preventDefault();
+    await createIncident({ title: newTitle, description: newDesc });
     setNewTitle("");
     setNewDesc("");
     setIsOpen(false);
   };
 
-  const handleResolve = (id: string) => {
-    setIncidents((current) =>
-      current.map((inc) =>
-        inc.id === id ? { ...inc, status: "solved" } : inc,
-      ),
-    );
+  const handleResolve = (id: number) => {
+    solveIncident(id);
   };
 
   // Filter Logic
   const visibleIncidents = incidents.filter((inc) =>
-    showSolved ? true : inc.status === "active",
+    showSolved ? true : inc.isActive,
   );
-  const activeCount = incidents.filter((i) => i.status === "active").length;
+
+  const incidentToShow = showSolved
+    ? [...visibleIncidents, ...historyIncidents]
+    : visibleIncidents;
+  const activeCount = incidents.filter((i) => i.isActive).length;
 
   return (
     <div className="w-full mx-auto space-y-4 font-sans mt-8">
@@ -260,7 +262,7 @@ export default function IncidentWidget() {
 
       {/* --- Content Area --- */}
       <div className="bg-slate-100 border border-slate-300 rounded-sm p-4 relative ml-2 min-h-[200px]">
-        {visibleIncidents.length === 0 ? (
+        {incidentToShow.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-40 text-slate-400">
             {showSolved ? (
               <p className="text-sm">No incidents found in history.</p>
@@ -277,7 +279,7 @@ export default function IncidentWidget() {
         ) : (
           <ScrollArea className="w-full whitespace-nowrap pb-4">
             <div className="flex w-max space-x-4">
-              {visibleIncidents.map((incident) => (
+              {incidentToShow.map((incident) => (
                 <IncidentCard
                   key={incident.id}
                   data={incident}
