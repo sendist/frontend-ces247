@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { CalendarDateRangePicker } from "@/components/dashboard/date-range-picker";
 import { addDays, startOfDay } from "date-fns";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useDashboardData } from "@/hooks/use-dashboard-data";
 import { ChannelData } from "@/types/dashboard"; // Ensure this is imported
@@ -50,6 +50,8 @@ export default function DashboardPage() {
     from: new Date(),
     to: new Date(),
   });
+  const [lastSyncDate, setLastSyncDate] = useState<string | undefined>("");
+  const lastSyncRef = useRef<string | null>(null);
 
   // 1. Polling Effect: Runs only when we have a jobId to track
   useEffect(() => {
@@ -58,9 +60,15 @@ export default function DashboardPage() {
     const checkStatus = async () => {
       try {
         const { data } = await api.get(`schedule/status/${syncingJobId}`);
-        
+
         if (data.status === "completed") {
-          toast.success("Sync Complete", { description: "Dashboard data updated." });
+          toast.success("Sync Complete", {
+            description: "Dashboard data updated.",
+            className: "text-black bg-green",
+          });
+          if (lastSyncRef.current) {
+            setLastSyncDate(lastSyncRef.current);
+          }
           setSyncingJobId(null);
           setIsJobProcessing(false);
           // Optional: trigger a data refresh for the dashboard charts
@@ -78,15 +86,18 @@ export default function DashboardPage() {
     return () => clearInterval(interval);
   }, [syncingJobId]);
 
-// 2. Updated Trigger Function
+  // 2. Updated Trigger Function
   const handleSyncDailyOca = async () => {
     setIsJobProcessing(true);
     try {
       const response = await api.post("schedule/sync-daily-oca");
-      
+
       if (response.data.jobId) {
         setSyncingJobId(response.data.jobId);
-        toast.info("Sync Started", { description: "Fetching latest batches..." });
+        toast("Sync Started", {
+          description: "Fetching latest batches...",
+        });
+        lastSyncRef.current = response.data.lastSync;
       } else {
         // Fallback if no jobId returned
         toast.success(response.data.message);
@@ -97,7 +108,6 @@ export default function DashboardPage() {
       setIsJobProcessing(false);
     }
   };
-
 
   const normalizedDateRange = useMemo(() => {
     if (!dateRange?.from) return undefined;
@@ -115,9 +125,13 @@ export default function DashboardPage() {
     };
   }, [dateRange]);
 
-  const { summary, channels, isLoading } = useDashboardData({
+  const { summary, channels, lastSync, isLoading } = useDashboardData({
     dateRange: normalizedDateRange,
   });
+
+  useEffect(() => {
+    if (lastSync) setLastSyncDate(lastSync.lastSyncWib);
+  }, [lastSync]);
 
   // CONFIG: Define the specific order and matching logic
   const orderedLayout = [
@@ -175,26 +189,35 @@ export default function DashboardPage() {
         </h2>
         <div className="flex items-center space-x-2">
           {/* ACTION 1: DAILY TICKET SYNC (THE NEW BUTTON) */}
+          <div className="text-sm">
+            <Button
+              
+              className={`bg-slate-800 hover:bg-slate-800 border-slate-700 text-slate-100 transition-all font-light`}
+            >
+              Last Sync: {lastSyncDate}
+            </Button>
+          </div>
+
           <div className="flex flex-col gap-1">
-{/* ACTION BUTTON */}
-          <Button
-            onClick={handleSyncDailyOca}
-            disabled={isJobProcessing}
-            variant="outline"
-            className={`bg-slate-800 border-slate-700 hover:bg-slate-700 text-white transition-all ${
-              isJobProcessing ? "border-blue-500/50 bg-blue-500/10" : ""
-            }`}
-          >
-            {isJobProcessing ? (
-              <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
-            ) : (
-              <RefreshCw className="h-4 w-4 text-blue-500" />
-            )}
-            {/* Optional text for better UX on desktop */}
-            <span className="ml-2 hidden lg:inline">
-              {isJobProcessing ? "Syncing..." : "Sync Today"}
-            </span>
-          </Button>
+            {/* ACTION BUTTON */}
+            <Button
+              onClick={handleSyncDailyOca}
+              disabled={isJobProcessing}
+              variant="outline"
+              className={`bg-slate-800 border-slate-700 hover:bg-slate-700 text-white transition-all ${
+                isJobProcessing ? "border-blue-500/50 bg-blue-500/10" : ""
+              }`}
+            >
+              {isJobProcessing ? (
+                <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
+              ) : (
+                <RefreshCw className="h-4 w-4 text-blue-500" />
+              )}
+              {/* Optional text for better UX on desktop */}
+              <span className="ml-2 hidden lg:inline font-light">
+                {isJobProcessing ? "Syncing..." : "Sync Today"}
+              </span>
+            </Button>
           </div>
           <CalendarDateRangePicker date={dateRange} setDate={setDateRange} />
         </div>

@@ -40,9 +40,18 @@ export function useDashboardData({ dateRange }: UseDashboardProps) {
     },
   });
 
+  const lastSync = useQuery({
+    queryKey: ["sync"],
+    queryFn: async () => {
+      const { data } = await api.get<{lastSyncWib: string}>("/schedule/last-sync");
+      return data;
+    }
+  })
+
   return {
     summary: summaryQuery.data,
     channels: channelsQuery.data,
+    lastSync: lastSync.data,
     isLoading: summaryQuery.isLoading || channelsQuery.isLoading,
     isError: summaryQuery.isError || channelsQuery.isError,
     refetch: () => {
