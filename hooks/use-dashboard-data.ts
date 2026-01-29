@@ -57,6 +57,7 @@ export function useDashboardData({ dateRange }: UseDashboardProps) {
     refetch: () => {
       summaryQuery.refetch();
       channelsQuery.refetch();
+      lastSync.refetch();
     },
   };
 }

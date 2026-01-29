@@ -53,6 +53,26 @@ export default function DashboardPage() {
   const [lastSyncDate, setLastSyncDate] = useState<string | undefined>("");
   const lastSyncRef = useRef<string | null>(null);
 
+  const normalizedDateRange = useMemo(() => {
+    if (!dateRange?.from) return undefined;
+
+    const tz = "Asia/Jakarta";
+
+    const fromLocal = startOfDay(dateRange.from);
+    const toLocal = dateRange.to
+      ? addDays(startOfDay(dateRange.to), 1)
+      : addDays(fromLocal, 1);
+
+    return {
+      from: fromZonedTime(fromLocal, tz).toISOString(),
+      to: fromZonedTime(toLocal, tz).toISOString(),
+    };
+  }, [dateRange]);
+
+  const { summary, channels, lastSync, isLoading, refetch } = useDashboardData({
+    dateRange: normalizedDateRange,
+  });
+
   // 1. Polling Effect: Runs only when we have a jobId to track
   useEffect(() => {
     if (!syncingJobId) return;
@@ -62,9 +82,10 @@ export default function DashboardPage() {
         const { data } = await api.get(`schedule/status/${syncingJobId}`);
 
         if (data.status === "completed") {
+          await refetch();
           toast.success("Sync Complete", {
             description: "Dashboard data updated.",
-            className: "text-black bg-green",
+            className: "text-black",
           });
           if (lastSyncRef.current) {
             setLastSyncDate(lastSyncRef.current);
@@ -82,9 +103,9 @@ export default function DashboardPage() {
       }
     };
 
-    const interval = setInterval(checkStatus, 3000); // Poll every 3 seconds
+    const interval = setInterval(checkStatus, 1000); // Poll every 1 seconds
     return () => clearInterval(interval);
-  }, [syncingJobId]);
+  }, [syncingJobId, refetch]);
 
   // 2. Updated Trigger Function
   const handleSyncDailyOca = async () => {
@@ -108,26 +129,6 @@ export default function DashboardPage() {
       setIsJobProcessing(false);
     }
   };
-
-  const normalizedDateRange = useMemo(() => {
-    if (!dateRange?.from) return undefined;
-
-    const tz = "Asia/Jakarta";
-
-    const fromLocal = startOfDay(dateRange.from);
-    const toLocal = dateRange.to
-      ? addDays(startOfDay(dateRange.to), 1)
-      : addDays(fromLocal, 1);
-
-    return {
-      from: fromZonedTime(fromLocal, tz).toISOString(),
-      to: fromZonedTime(toLocal, tz).toISOString(),
-    };
-  }, [dateRange]);
-
-  const { summary, channels, lastSync, isLoading } = useDashboardData({
-    dateRange: normalizedDateRange,
-  });
 
   useEffect(() => {
     if (lastSync) setLastSyncDate(lastSync.lastSyncWib);
@@ -191,7 +192,6 @@ export default function DashboardPage() {
           {/* ACTION 1: DAILY TICKET SYNC (THE NEW BUTTON) */}
           <div className="text-sm">
             <Button
-              
               className={`bg-slate-800 hover:bg-slate-800 border-slate-700 text-slate-100 transition-all font-light`}
             >
               Last Sync: {lastSyncDate}
