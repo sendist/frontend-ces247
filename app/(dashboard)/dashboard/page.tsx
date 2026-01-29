@@ -188,48 +188,54 @@ export default function DashboardPage() {
         <h2 className="text-3xl font-bold tracking-tight text-white">
           Dashboard
         </h2>
-        <div className="flex items-center space-x-2">
-          {/* ACTION 1: DAILY TICKET SYNC (THE NEW BUTTON) */}
-          <div className="text-sm">
-            <Button
-              className={`bg-slate-800 hover:bg-slate-800 border-slate-700 text-slate-100 transition-all font-light`}
-            >
-              Last Sync: {lastSyncDate}
-            </Button>
-          </div>
+        <div className="flex flex-col w-full sm:w-auto space-y-2 sm:space-y-0 sm:flex-row sm:items-center sm:space-x-2">
+          <div className="flex items-center space-x-2">
+            {/* ACTION 1: DAILY TICKET SYNC (THE NEW BUTTON) */}
+            <div className="text-sm w-full">
+              <Button
+                className={`bg-slate-800 w-full hover:bg-slate-800 border-slate-700 text-slate-100 transition-all font-light`}
+              >
+                Last Sync: {lastSyncDate}
+              </Button>
+            </div>
 
-          <div className="flex flex-col gap-1">
-            {/* ACTION BUTTON */}
-            <Button
-              onClick={handleSyncDailyOca}
-              disabled={isJobProcessing}
-              variant="outline"
-              className={`bg-slate-800 border-slate-700 hover:bg-slate-700 text-white transition-all ${
-                isJobProcessing ? "border-blue-500/50 bg-blue-500/10" : ""
-              }`}
-            >
-              {isJobProcessing ? (
-                <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
-              ) : (
-                <RefreshCw className="h-4 w-4 text-blue-500" />
-              )}
-              {/* Optional text for better UX on desktop */}
-              <span className="ml-2 hidden lg:inline font-light">
-                {isJobProcessing ? "Syncing..." : "Sync Today"}
-              </span>
-            </Button>
+            <div className="flex flex-col gap-1">
+              {/* ACTION BUTTON */}
+              <Button
+                onClick={handleSyncDailyOca}
+                disabled={isJobProcessing}
+                variant="outline"
+                className={`bg-slate-800 border-slate-700 hover:bg-slate-700 text-white transition-all ${
+                  isJobProcessing ? "border-blue-500/50 bg-blue-500/10" : ""
+                }`}
+              >
+                {isJobProcessing ? (
+                  <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
+                ) : (
+                  <RefreshCw className="h-4 w-4 text-blue-500" />
+                )}
+                {/* Optional text for better UX on desktop */}
+                <span className="ml-2 hidden lg:inline font-light">
+                  {isJobProcessing ? "Syncing..." : "Sync Today"}
+                </span>
+              </Button>
+            </div>
           </div>
-          <CalendarDateRangePicker date={dateRange} setDate={setDateRange} />
+          <CalendarDateRangePicker
+            className="w-full sm:w-auto"
+            date={dateRange}
+            setDate={setDateRange}
+          />
         </div>
       </div>
 
       <TopRow summary={summary} />
 
-      <div className="lg:grid lg:grid-cols-8 gap-4">
+      <div className="lg:grid lg:grid-cols-4 2xl:grid-cols-8 gap-4">
         <LeftColumn summary={summary} />
 
         {/* Change col-span based on your layout needs */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 col-span-7 gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 lg:col-span-3 2xl:col-span-7 gap-2">
           {processedChannels.map((channel, index) => (
             <ChannelColumn
               key={index}

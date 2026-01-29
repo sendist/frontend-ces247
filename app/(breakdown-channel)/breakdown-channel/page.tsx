@@ -169,7 +169,7 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 xl:grid-cols-5 gap-4">
         {/* Change col-span based on your layout needs */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 col-span-7 gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 col-span-7 gap-2">
           {isLoading ? (
             <p className="text-slate-500 col-span-full text-center py-10">
               Loading dashboard data...

@@ -25,7 +25,7 @@ export function LeftColumn({ summary }: LeftColumnProps) {
     );
   }
   return (
-    <div className="flex flex-col gap-4 mb-4 lg:mb-0">
+    <div className="flex flex-col lg:col-span-1 gap-4 mb-4 lg:mb-0">
       <Card className="bg-red-900/20 border-red-900/50 text-center">
         <CardHeader className="pb-2 py-4">
           <CardTitle className="text-2xl font-bold text-red-500">
@@ -64,18 +64,9 @@ export function LeftColumn({ summary }: LeftColumnProps) {
             label="Extra Quota"
             value={summary?.priority?.extra ?? 0}
           />
-          <BadgePriority
-            label="CC"
-            value={0}
-          />
-          <BadgePriority
-            label="VIP"
-            value={summary?.priority?.vip ?? 0}
-          />
-          <BadgePriority
-            label="P1"
-            value={summary?.priority?.pareto ?? 0}
-          />
+          <BadgePriority label="CC" value={0} />
+          <BadgePriority label="VIP" value={summary?.priority?.vip ?? 0} />
+          <BadgePriority label="P1" value={summary?.priority?.pareto ?? 0} />
           <BadgePriority
             label="Urgent"
             value={summary?.priority?.urgent ?? 0}

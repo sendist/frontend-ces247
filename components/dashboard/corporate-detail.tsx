@@ -51,7 +51,7 @@ export function CorporateCard({
   );
 
   return (
-    <Card className="w-full max-w-4xl border-none bg-[#F3F4F6] shadow-sm p-1">
+    <Card className="w-full border-none bg-[#F3F4F6] shadow-sm p-1">
       {/* Header Section */}
       <CardHeader className="flex flex-row items-start justify-between pt-2 px-4">
         <div className="flex flex-col gap-3">

@@ -155,7 +155,7 @@ export function SlaCustomerKipCard({
   // }, [data, searchTerm]);
 
   return (
-    <Card className="w-full max-w-4xl border-none bg-[#F3F4F6] shadow-sm">
+    <Card className="w-full border-none bg-[#F3F4F6] shadow-sm">
       {/* Header with Search */}
       <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-6">
         <CardTitle className="text-md font-bold text-red-600">

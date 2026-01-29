@@ -52,61 +52,58 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-8 gap-4">
-
-          <ProductCard
-            className="col-span-1 lg:col-span-3"
-            product="Connectivity"
-            isLoading={isLoading}
-            data={
-              productDetail?.find(
-                (item) => item.product === "CONNECTIVITY",
-              ) ?? {
-                product: "CONNECTIVITY",
-                total: 0,
-                open: 0,
-                over3h: 0,
-                pctSla: "0%",
-                topKips: [],
-                topCategories: [],
-                trend: [],
-              }
+      <div className="grid grid-cols-1 2xl:grid-cols-8 gap-4">
+        <ProductCard
+          className="col-span-1 lg:col-span-3"
+          product="Connectivity"
+          isLoading={isLoading}
+          data={
+            productDetail?.find((item) => item.product === "CONNECTIVITY") ?? {
+              product: "CONNECTIVITY",
+              total: 0,
+              open: 0,
+              over3h: 0,
+              pctSla: "0%",
+              topKips: [],
+              topCategories: [],
+              trend: [],
             }
-          />
-          <ProductCard
-            className="col-span-1 lg:col-span-3"
-            product="Solution"
-            isLoading={isLoading}
-            data={
-              productDetail?.find((item) => item.product === "SOLUTION") ?? {
-                product: "SOLUTION",
-                total: 0,
-                open: 0,
-                over3h: 0,
-                pctSla: "0%",
-                topKips: [],
-                topCategories: [],
-                trend: [],
-              }
+          }
+        />
+        <ProductCard
+          className="col-span-1 lg:col-span-3"
+          product="Solution"
+          isLoading={isLoading}
+          data={
+            productDetail?.find((item) => item.product === "SOLUTION") ?? {
+              product: "SOLUTION",
+              total: 0,
+              open: 0,
+              over3h: 0,
+              pctSla: "0%",
+              topKips: [],
+              topCategories: [],
+              trend: [],
             }
-          />
-          <ProductCard
-            className="col-span-1 lg:col-span-2"
-            product="DAds"
-            isLoading={isLoading}
-            data={
-              productDetail?.find((item) => item.product === "DADS") ?? {
-                product: "DADS",
-                total: 0,
-                open: 0,
-                over3h: 0,
-                pctSla: "0%",
-                topKips: [],
-                topCategories: [],
-                trend: [],
-              }
+          }
+        />
+        <ProductCard
+          className="col-span-1 lg:col-span-2"
+          product="DAds"
+          isLoading={isLoading}
+          data={
+            productDetail?.find((item) => item.product === "DADS") ?? {
+              product: "DADS",
+              total: 0,
+              open: 0,
+              over3h: 0,
+              pctSla: "0%",
+              topKips: [],
+              topCategories: [],
+              trend: [],
             }
-          />
+          }
+        />
       </div>
     </div>
   );
