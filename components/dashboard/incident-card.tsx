@@ -60,11 +60,20 @@ const IncidentCard = ({
       {/* Title & Action Row */}
       <div className="flex justify-between items-start mb-2">
         {/* Title "Pill" */}
-        <div className="bg-white shadow-sm border border-slate-200 rounded-md py-1 px-3 w-fit max-w-[80%]">
-          <h3 className="font-bold text-slate-900 text-sm truncate">
-            {data.title}
-          </h3>
-        </div>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="bg-white shadow-sm border border-slate-200 rounded-md py-1 px-3 w-fit max-w-[80%] cursor-default">
+                <h3 className="font-bold text-slate-900 text-sm truncate">
+                  {data.title}
+                </h3>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent className="max-w-sm break-words">
+              {data.title}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
 
         {/* Resolve Button (Only show if active) */}
         {data.isActive && user?.role === "ADMIN" && (
@@ -89,7 +98,7 @@ const IncidentCard = ({
       </div>
 
       {/* Description */}
-      <div className="text-xs text-slate-700 leading-relaxed whitespace-pre-wrap font-sans min-h-[100px]">
+      <div className="text-xs text-slate-700 leading-relaxed whitespace-pre-wrap font-sans max-h-[120px] overflow-y-auto">
         {data.description}
       </div>
 
