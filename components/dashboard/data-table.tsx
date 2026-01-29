@@ -23,34 +23,39 @@ export function DataTable({ title, data, columns }: DataTableProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0 -mt-4">
-        <Table>
-          <TableHeader className="bg-slate-900/50">
-            <TableRow className="border-slate-700 hover:bg-slate-900/50">
-              {columns.map((col) => (
-                <TableHead
-                  key={col.key}
-                  className="text-slate-400 h-6 text-[10px]"
-                >
-                  {col.label}
-                </TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((row, i) => (
-              <TableRow
-                key={i}
-                className="border-slate-700 hover:bg-slate-800/50"
-              >
+        <div className="overflow-x-auto overflow-y-hidden scrollbar-modern">
+          <Table className="min-w-max">
+            <TableHeader className="bg-slate-900/50">
+              <TableRow className="border-slate-700 hover:bg-slate-900/50">
                 {columns.map((col) => (
-                  <TableCell key={col.key} className="text-slate-300 py-1 text-[8px]">
-                    {row[col.key]}
-                  </TableCell>
+                  <TableHead
+                    key={col.key}
+                    className="text-slate-400 h-6 text-[10px]"
+                  >
+                    {col.label}
+                  </TableHead>
                 ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {data.map((row, i) => (
+                <TableRow
+                  key={i}
+                  className="border-slate-700 hover:bg-slate-800/50"
+                >
+                  {columns.map((col) => (
+                    <TableCell
+                      key={col.key}
+                      className="text-slate-300 py-1 text-[8px]"
+                    >
+                      {row[col.key]}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   );

@@ -115,6 +115,34 @@
   --sidebar-ring: oklch(0.552 0.016 285.938);
 }
 
+/* ===== Global Modern Scrollbar ===== */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #475569 transparent;
+}
+
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #475569; /* slate-600 */
+  border-radius: 9999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #64748b; /* slate-500 */
+}
+
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
