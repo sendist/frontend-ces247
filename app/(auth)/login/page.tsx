@@ -18,7 +18,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { toast } from "sonner";
 
 // Validation Schema
@@ -68,11 +75,13 @@ export default function LoginPage() {
     <Card>
       <CardHeader>
         <CardTitle>Login</CardTitle>
-        <CardDescription>Enter your credentials to access your account.</CardDescription>
+        <CardDescription>
+          Enter your credentials to access your account.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} method="POST" className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="email"
@@ -99,7 +108,11 @@ export default function LoginPage() {
                 </FormItem>
               )}
             />
-            <Button className="w-full" type="submit" disabled={loginMutation.isPending}>
+            <Button
+              className="w-full"
+              type="submit"
+              disabled={loginMutation.isPending}
+            >
               {loginMutation.isPending ? "Logging in..." : "Login"}
             </Button>
           </form>

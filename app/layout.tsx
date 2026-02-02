@@ -30,9 +30,9 @@ export default async function RootLayout({
 }>) {
   const nonce = (await headers()).get('x-nonce') || '';
   return (
-    <html lang="en">
+    <html lang="en" nonce={nonce}>
     {/* Passing nonce to Head ensures inline styles are allowed without 'unsafe-inline' */}
-      <head nonce={nonce} />
+      <head />
       <body>
         <QueryProvider>
           {children}
