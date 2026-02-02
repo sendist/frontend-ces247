@@ -24,7 +24,6 @@ export function useAuth(requireAuth = false) {
       try {
         // get current user route
         const res = await api.get<User>("api/auth/me"); 
-        console.log("Fetched user:", res.data);
         return res.data;
       } catch (err) {
         return null;
