@@ -226,7 +226,7 @@ export function TopRow({ summary }: TopRowProps) {
         />
         <CsatMetricCard
           title="CSAT"
-          value={summary?.csatScore?.scorecsat ?? 0}
+          value={summary?.csatScore?.scorecsat.toFixed(2) ?? 0}
           showChart={true}
           chartColor="#10b981" // emerald-500
           trend={{ value: "12%", direction: "up" }}

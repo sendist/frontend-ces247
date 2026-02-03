@@ -31,7 +31,7 @@ export function proxy(request: NextRequest) {
       'sha256-XbNwOSjMIgSNj3ewh1FPDgy/T33iTuvdeceTh/VSFZg=';
     img-src 'self' blob: data:;
     font-src 'self';
-    connect-src 'self' http://localhost:3000 http://localhost:3001;
+    connect-src 'self' ${process.env.NEST_PUBLIC_API_URL} ${process.env.NEXT_PUBLIC_API_URL};
     frame-ancestors 'none';
     base-uri 'self';
     form-action 'self';
