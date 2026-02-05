@@ -28,11 +28,15 @@ export function proxy(request: NextRequest) {
       'sha256-h/GKjXBq1QiwvO1y7p0JkvVZk4w7xTPz2rn2eswXu3k='
       'sha256-sHwQzC2ZsVrt1faUYCjF/eo8aIoBlQbGjVstzanL9CU='
       'sha256-WjBwDsyVeYZp1bK5jTu7D4KrA/IMa4ddhGMJxlQ1td0='
-      'sha256-XbNwOSjMIgSNj3ewh1FPDgy/T33iTuvdeceTh/VSFZg=';
-    img-src 'self' blob: data:;
+      'sha256-XbNwOSjMIgSNj3ewh1FPDgy/T33iTuvdeceTh/VSFZg='
+      'sha256-nzTgYzXYDNe6BAHiiI7NNlfK8n/auuOAhh2t92YvuXo='
+      'sha256-441zG27rExd4/il+NvIqyL8zFx5XmyNQtE381kSkUJk='
+      'sha256-PlumsSlvJ7vvWzjqibGAYKq92O3y/4JTxWWsWJvyUYA='
+      ;
+    img-src 'self' blob: data: ${process.env.NEST_PUBLIC_API_URL} ${process.env.NEXT_PUBLIC_API_URL};
     font-src 'self';
     connect-src 'self' ${process.env.NEST_PUBLIC_API_URL} ${process.env.NEXT_PUBLIC_API_URL};
-    frame-ancestors 'none';
+    frame-src 'self' ${process.env.NEST_PUBLIC_API_URL} ${process.env.NEXT_PUBLIC_API_URL};
     base-uri 'self';
     form-action 'self';
   `

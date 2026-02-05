@@ -143,6 +143,60 @@
   background-color: #64748b; /* slate-500 */
 }
 
+.prose img {
+  display: block !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+.prose img[xmlns] {
+  display: block !important;
+  max-width: 100% !important;
+  height: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Styling for Tiptap Tables */
+.tiptap-editor .ProseMirror table,
+.prose table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+.tiptap-editor .ProseMirror td,
+.tiptap-editor .ProseMirror th,
+.prose td,
+.prose th {
+  min-width: 1em;
+  border: 1px solid #cbd5e1; /* slate-300 */
+  padding: 3px 5px;
+  vertical-align: top;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.tiptap-editor .ProseMirror th,
+.prose th {
+  font-weight: bold;
+  text-align: left;
+  background-color: #747a80; /* slate-100 */
+}
+
+.tiptap-editor .ProseMirror .selectedCell:after {
+  z-index: 2;
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(200, 200, 255, 0.4);
+  pointer-events: none;
+}
 
 @layer base {
   * {

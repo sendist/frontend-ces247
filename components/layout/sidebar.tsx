@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  Newspaper,
   ShoppingBasket,
   TicketPercent,
   UserRoundPlus,
@@ -88,7 +89,13 @@ export function Sidebar() {
       href: "/register",
       icon: UserRoundPlus,
       roles: ["ADMIN"],
-    }
+    },
+    {
+      title: "Berita dan Informasi",
+      href: "/news",
+      icon: Newspaper,
+      roles: ["USER", "ADMIN"],
+    },
   ];
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);

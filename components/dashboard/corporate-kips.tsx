@@ -30,7 +30,7 @@ interface SlaCustomerKipProps {
   onPageChange: (page: number) => void;
 }
 
-// --- Sample Data from Image ---
+// --- Sample Data ---
 const DEFAULT_DATA: CompanyKips[] = [
   {
     company: "PT. SUPER SPRING",
@@ -70,7 +70,7 @@ export function SlaCustomerKipCard({
   onPageChange,
 }: SlaCustomerKipProps) {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-
+7
   // --- 1. Smart Pagination Logic ---
   const getPaginationItems = () => {
     const items: (number | string)[] = [];
