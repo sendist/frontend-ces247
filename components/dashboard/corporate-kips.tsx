@@ -70,7 +70,7 @@ export function SlaCustomerKipCard({
   onPageChange,
 }: SlaCustomerKipProps) {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-7
+  7;
   // --- 1. Smart Pagination Logic ---
   const getPaginationItems = () => {
     const items: (number | string)[] = [];
@@ -129,26 +129,42 @@ export function SlaCustomerKipCard({
   //   setCurrentPage(pageNumber);
   // };
 
-  // Helper to render the percentage bar
   const ProgressBar = ({
     value,
     isMain,
   }: {
     value: number;
     isMain: boolean;
-  }) => (
-    <div className="flex w-[120px] sm:w-[150px] justify-start bg-gray-200 h-4 sm:h-5 rounded-sm overflow-hidden">
-      <div
-        className={cn(
-          "flex items-center justify-end px-2 text-xs font-bold text-white transition-all duration-500",
-          isMain ? "bg-[#0B1750]" : "bg-[#2b6cb0]",
+  }) => {
+    const isSmall = value < 25;
+
+    return (
+      <div className="relative w-[120px] sm:w-[150px] h-4 sm:h-5 bg-gray-200 rounded-sm overflow-hidden">
+        {/* Progress bar */}
+        <div
+          className={cn(
+            "h-full transition-all duration-500 relative",
+            isMain ? "bg-[#0B1750]" : "bg-[#2b6cb0]",
+          )}
+          style={{ width: `${value}%` }}
+        >
+          {/* Label INSIDE bar */}
+          {!isSmall && (
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-bold text-white whitespace-nowrap">
+              {value.toLocaleString("id-ID", { minimumFractionDigits: 2 })}%
+            </span>
+          )}
+        </div>
+
+        {/* Label OUTSIDE bar */}
+        {isSmall && (
+          <span className="absolute left-1 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400 whitespace-nowrap">
+            {value.toLocaleString("id-ID", { minimumFractionDigits: 2 })}%
+          </span>
         )}
-        style={{ width: `${value}%` }}
-      >
-        {value.toLocaleString("id-ID", { minimumFractionDigits: 2 })}%
       </div>
-    </div>
-  );
+    );
+  };
 
   // React.useEffect(() => {
   //   setCurrentPage(1);
