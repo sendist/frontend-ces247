@@ -154,7 +154,7 @@ export function TopRow({ summary }: TopRowProps) {
           {/* 1. Increased height so axes and bars are visible */}
           <div className="h-[80px] w-full -mt-4">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={summary?.hourlyTrend} className="-ml-6">
+              <BarChart data={summary?.hourlyTrend} className="-ml-4">
                 {/* 2. X-Axis: Replace "hour" with the actual key in your data (e.g. "time", "label") */}
                 <XAxis
                   dataKey="time_bucket"
