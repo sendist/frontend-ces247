@@ -68,13 +68,22 @@ export function TopRow({ summary }: TopRowProps) {
         subtitle="Achieved"
         trend={{ value: `${slaDiff.toFixed(2)}%`, direction: slaDirection }}
         icon={<CheckCircle className="h-6 w-6 text-green-500" />}
-        className="bg-green-900/20 border-green-900/50 lg:col-span-1 2xl:col-span-4"
-        contentClassName="text-green-500"
+        className={`
+        /* Light Mode: Fresh, soft green */
+        bg-green-100/50 border-green-200 
+        
+        /* Dark Mode: Deep, glowing green */
+        dark:bg-green-900/20 dark:border-green-900/50 
+        
+        lg:col-span-1 2xl:col-span-4 transition-colors
+      `}
+        /* Text remains green-500 or green-600 for better contrast on light */
+        contentClassName="text-green-600 dark:text-green-500"
       />
 
-      <Card className="bg-slate-800 border-slate-700 col-span-1 lg:col-span-2 2xl:col-span-7">
+      <Card className="dark:bg-slate-800 dark:border-slate-700 col-span-1 lg:col-span-2 2xl:col-span-7">
         <CardHeader className="pb-2 -m-2">
-          <CardTitle className="text-sm font-medium text-slate-300">
+          <CardTitle className="text-sm font-medium dark:text-slate-300">
             Daily Trend
           </CardTitle>
         </CardHeader>
@@ -84,11 +93,12 @@ export function TopRow({ summary }: TopRowProps) {
               <LineChart data={summary?.dailyTrend} className="-ml-6">
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#1e293b",
-                    border: "none",
+                    backgroundColor: "var(--chart-tooltip)",
+                    border: "var(--chart-tooltip-border)",
+                    borderRadius: "8px",
                     fontSize: "12px",
                   }}
-                  itemStyle={{ color: "#fff" }}
+                  itemStyle={{ color: "var(--chart-tooltip-text)" }}
                 />
                 <XAxis
                   dataKey="date"
@@ -123,12 +133,12 @@ export function TopRow({ summary }: TopRowProps) {
         </CardContent>
       </Card>
 
-      <Card className="bg-slate-800 border-slate-700 col-span-1 lg:col-span-3 2xl:col-span-9 pb-0">
+      <Card className="dark:bg-slate-800 dark:border-slate-700 col-span-1 lg:col-span-3 2xl:col-span-9 pb-0">
         <CardHeader className="pb-2 -m-2 flex flex-row items-center justify-between gap-4 space-y-0">
           {/* 1. Title Section */}
-          <CardTitle className="text-sm font-medium text-slate-300">
+          <CardTitle className="text-sm font-medium dark:text-slate-300">
             Tickets
-            <span className="ml-2 text-xs font-normal text-slate-400">
+            <span className="ml-2 text-xs font-normal dark:text-slate-400">
               Per hour
             </span>
           </CardTitle>
@@ -175,12 +185,12 @@ export function TopRow({ summary }: TopRowProps) {
                 {/* 4. Tooltip with custom dark/light mode styling */}
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#1e293b", // slate-800
-                    border: "none",
+                    backgroundColor: "var(--chart-tooltip)",
+                    border: "var(--chart-tooltip-border)",
                     borderRadius: "8px",
-                    color: "#fff",
+                    fontSize: "12px",
                   }}
-                  itemStyle={{ color: "#fff" }}
+                  itemStyle={{ color: "var(--chart-tooltip-text)" }}
                   cursor={{ fill: "rgba(255,255,255,0.05)" }}
                 />
 
@@ -222,7 +232,7 @@ export function TopRow({ summary }: TopRowProps) {
           title="Unassigned"
           value="..."
           icon={<AlertCircle className="h-6 w-6 text-red-500" />}
-          className="col-span-1 bg-red-900/20 border-red-900/50"
+          className="col-span-1 bg-red-100/50 border-red-200  dark:bg-red-900/20 dark:border-red-900/50"
         />
         <CsatMetricCard
           title="CSAT"

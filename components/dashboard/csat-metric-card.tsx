@@ -39,10 +39,13 @@ export function CsatMetricCard({
 
   return (
     <Card
-      className={cn("bg-slate-800 border-slate-700 overflow-hidden", className)}
+      className={cn(
+        "dark:bg-slate-800 dark:border-slate-700 overflow-hidden",
+        className,
+      )}
     >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 -m-2">
-        <CardTitle className="text-xs font-medium text-slate-300">
+        <CardTitle className="text-xs font-medium dark:text-slate-300">
           {title}
         </CardTitle>
         {icon}
@@ -80,7 +83,7 @@ export function CsatMetricCard({
                     y="50%"
                     textAnchor="middle"
                     dominantBaseline="middle"
-                    className="fill-white text-[10px] font-bold"
+                    className="dark:fill-white text-[10px] font-bold"
                   >
                     {`${Math.round((numericValue / 5) * 100)}%`}
                   </text>
@@ -90,7 +93,7 @@ export function CsatMetricCard({
           )}
 
           <div className="z-10">
-            <div className="text-sm font-bold text-white">{value}</div>
+            <div className="text-sm font-bold dark:text-white">{value}</div>
           </div>
         </div>
       </CardContent>

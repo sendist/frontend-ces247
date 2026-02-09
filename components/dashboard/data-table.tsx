@@ -16,21 +16,21 @@ interface DataTableProps {
 
 export function DataTable({ title, data, columns }: DataTableProps) {
   return (
-    <Card className="bg-slate-800 border-slate-700 mt-2">
+    <Card className="dark:bg-slate-800 dark:border-slate-700 mt-2">
       <CardHeader className="pb-0 -mt-4 -mb-2 -ml-2">
-        <CardTitle className="text-sm font-medium text-white">
+        <CardTitle className="text-sm font-medium">
           {title}
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0 -mt-4">
         <div className="overflow-x-auto overflow-y-hidden scrollbar-modern">
           <Table className="min-w-max">
-            <TableHeader className="bg-slate-900/50">
-              <TableRow className="border-slate-700 hover:bg-slate-900/50">
+            <TableHeader className="bg-slate-100 dark:bg-slate-900/50">
+              <TableRow className="dark:border-slate-700 dark:hover:bg-slate-900/50">
                 {columns.map((col) => (
                   <TableHead
                     key={col.key}
-                    className="text-slate-400 h-6 text-[10px]"
+                    className="dark:text-slate-400 h-6 text-[10px]"
                   >
                     {col.label}
                   </TableHead>
@@ -41,12 +41,12 @@ export function DataTable({ title, data, columns }: DataTableProps) {
               {data.map((row, i) => (
                 <TableRow
                   key={i}
-                  className="border-slate-700 hover:bg-slate-800/50"
+                  className="dark:border-slate-700 dark:hover:bg-slate-900/50"
                 >
                   {columns.map((col) => (
                     <TableCell
                       key={col.key}
-                      className="text-slate-300 py-1 text-[8px]"
+                      className="dark:text-slate-300 py-1 text-[8px]"
                     >
                       {row[col.key]}
                     </TableCell>

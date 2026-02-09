@@ -72,7 +72,7 @@ export function CalendarDateRangePicker({
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[260px] sm:justify-start text-left font-normal bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700 hover:text-white",
+              "w-[260px] sm:justify-start text-left font-normal",
               !date && "text-muted-foreground",
               className,
             )}
@@ -93,7 +93,7 @@ export function CalendarDateRangePicker({
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-auto p-0 bg-slate-800 border-slate-700"
+          className="w-auto p-0"
           align="end"
         >
           <Calendar
@@ -103,28 +103,28 @@ export function CalendarDateRangePicker({
             selected={tempDate}
             onSelect={setTempDate} // Automatically updates tempDate on click
             numberOfMonths={months}
-            className="text-slate-200"
+            className=""
             // Ensure styles are visible
             classNames={{
               day_selected:
                 "bg-blue-600 text-white hover:bg-blue-600 hover:text-white focus:bg-blue-600 focus:text-white",
-              day_today: "bg-slate-700 text-slate-50",
-              day_outside: "text-slate-500 opacity-50",
+              day_today: "bg-slate-950 dark:bg-slate-700",
+              day_outside: "opacity-50",
             }}
           />
-          <div className="flex items-center justify-end gap-2 p-3 border-t border-slate-700">
+          <div className="flex items-center justify-end gap-2 p-3 border-t">
             <Button
               variant="ghost"
               size="sm"
               onClick={handleCancel}
-              className="text-slate-400 hover:text-white hover:bg-slate-700"
+              className=""
             >
               Cancel
             </Button>
             <Button
               size="sm"
               onClick={handleApply}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className=""
             >
               Apply
             </Button>

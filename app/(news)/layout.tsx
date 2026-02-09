@@ -23,7 +23,7 @@ export default function DashboardLayout({
     <div className="flex h-screen overflow-hidden">
       <Sidebar />
 
-      <main className="flex-1 overflow-y-auto bg-slate-950 p-4 dark:bg-black">
+      <main className="flex-1 overflow-y-auto bg-slate-50 p-4 dark:bg-slate-950">
         {children}
       </main>
     </div>

@@ -15,7 +15,7 @@ export default function NewsDetailPage() {
   if (!article) return <div>Article not found.</div>;
 
   return (
-    <div className="container mx-auto py-10 max-w-4xl text-white mt-8 md:mt-0">
+    <div className="container mx-auto py-10 max-w-4xl mt-8 md:mt-0">
       <ArrowLeft
         className="mb-4 cursor-pointer"
         onClick={() => window.history.back()}

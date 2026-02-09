@@ -129,7 +129,7 @@ export default function NewsPage({ isAdmin }: { isAdmin: boolean }) {
   const router = useRouter();
 
   return (
-    <div className="p-6 space-y-6 text-white mt-12 md:mt-0">
+    <div className="p-6 space-y-6 mt-12 md:mt-0">
       <div className="flex flex-col md:flex-row justify-between md:items-center">
         <h1 className="text-3xl font-bold">Latest News</h1>
 
@@ -139,7 +139,7 @@ export default function NewsPage({ isAdmin }: { isAdmin: boolean }) {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search news..."
-              className="pl-8 bg-slate-900 border-slate-700"
+              className="pl-8 dark:bg-slate-900 dark:border-slate-700"
               value={input}
               onChange={handleSearch}
             />
@@ -171,7 +171,7 @@ export default function NewsPage({ isAdmin }: { isAdmin: boolean }) {
 
       <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-1 2xl:grid-cols-2">
         {news.map((item) => (
-          <Card key={item.id} className="relative">
+          <Card key={item.id} className="relative dark:bg-slate-900">
             <CardHeader>
               <CardTitle className="text-xl md:text-2xl">
                 {item.title}
@@ -235,7 +235,7 @@ export default function NewsPage({ isAdmin }: { isAdmin: boolean }) {
       {/* Pagination Controls */}
       {meta && (
         <div className="mt-6 flex items-center justify-center gap-2 select-none">
-          <span className="text-sm font-bold text-slate-200 mr-2">Page</span>
+          <span className="text-sm font-bold dark:text-slate-200 mr-2">Page</span>
 
           {/* Loop through the Smart Pagination Items */}
           {getPaginationItems().map((item, index) => (

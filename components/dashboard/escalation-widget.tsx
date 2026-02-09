@@ -117,7 +117,7 @@ export function EscalationCard({
   return (
     <div
       className={cn(
-        "flex flex-col bg-[#F1F3F4] p-2 rounded-xl shadow-sm border border-slate-200",
+        "flex flex-col dark:bg-[#F1F3F4] p-2 rounded-xl shadow-sm border dark:border-slate-200",
         className,
       )}
     >

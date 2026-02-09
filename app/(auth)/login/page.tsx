@@ -72,7 +72,7 @@ export default function LoginPage() {
   }
 
   return (
-    <Card>
+    <Card className="dark:bg-slate-900">
       <CardHeader>
         <CardTitle>Login</CardTitle>
         <CardDescription>

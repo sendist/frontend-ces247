@@ -183,9 +183,9 @@ export default function DashboardPage() {
   });
 
   return (
-    <div className="min-h-screen bg-slate-950 p-4 text-slate-200 mt-12 md:mt-0">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-4 mt-12 md:mt-0">
       <div className="flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0 mb-6">
-        <h2 className="text-3xl font-bold tracking-tight text-white">
+        <h2 className="text-3xl font-bold tracking-tight">
           Dashboard
         </h2>
         <div className="flex flex-col w-full sm:w-auto space-y-2 sm:space-y-0 sm:flex-row sm:items-center sm:space-x-2">
@@ -193,7 +193,8 @@ export default function DashboardPage() {
             {/* ACTION 1: DAILY TICKET SYNC (THE NEW BUTTON) */}
             <div className="text-sm w-full">
               <Button
-                className={`bg-slate-800 w-full hover:bg-slate-800 border-slate-700 text-slate-100 transition-all font-light`}
+                variant="outline"
+                className={`transition-all font-light hover:text-inherit cursor-default`}
               >
                 Last Sync: {lastSyncDate}
               </Button>
@@ -205,7 +206,7 @@ export default function DashboardPage() {
                 onClick={handleSyncDailyOca}
                 disabled={isJobProcessing}
                 variant="outline"
-                className={`bg-slate-800 border-slate-700 hover:bg-slate-700 text-white transition-all ${
+                className={` transition-all ${
                   isJobProcessing ? "border-blue-500/50 bg-blue-500/10" : ""
                 }`}
               >

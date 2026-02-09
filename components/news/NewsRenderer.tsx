@@ -57,7 +57,7 @@ export function NewsRenderer({ content }: { content: any }) {
     <div className="space-y-8">
       {/* Main Content */}
       <div
-        className="prose prose-slate dark:prose-invert max-w-none text-slate-300"
+        className="prose prose-slate dark:prose-invert max-w-none dark:text-slate-300"
         dangerouslySetInnerHTML={{ __html: output }}
       />
 
@@ -72,7 +72,7 @@ export function NewsRenderer({ content }: { content: any }) {
               key={index}
               className="rounded-lg border bg-card overflow-hidden"
             >
-              <div className="bg-muted p-2 text-slate-700 text-sm font-medium border-b flex justify-between items-center">
+              <div className="bg-muted p-2 text-sm font-medium border-b flex justify-between items-center">
                 <span>{pdf.name}</span>
                 <a
                   href={pdf.url}

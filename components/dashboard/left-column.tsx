@@ -26,32 +26,32 @@ export function LeftColumn({ summary }: LeftColumnProps) {
   }
   return (
     <div className="flex flex-col lg:col-span-1 gap-4 mb-4 lg:mb-0">
-      <Card className="bg-red-900/20 border-red-900/50 text-center">
+      <Card className="bg-red-100/50 border-red-200  dark:bg-red-900/20 dark:border-red-900/50 text-center">
         <CardHeader className="pb-2 py-4">
           <CardTitle className="text-2xl font-bold text-red-500">
             {summary.totalTickets.toLocaleString()}
           </CardTitle>
-          <p className="text-sm font-medium text-slate-300">Total Tickets</p>
+          <p className="text-sm font-medium dark:text-slate-300">Total Tickets</p>
         </CardHeader>
         <CardContent className="grid grid-cols-2 gap-4 pt-4 border-t border-red-900/50">
           <div>
             <div className="text-lg font-bold text-red-500">
               {summary.totalOpen.toLocaleString()}
             </div>
-            <p className="text-xs text-slate-400">Open</p>
+            <p className="text-xs dark:text-slate-400">Open</p>
           </div>
           <div>
             <div className="text-lg font-bold text-green-500">
               {summary.totalClosed.toLocaleString()}
             </div>
-            <p className="text-xs text-slate-400">Closed</p>
+            <p className="text-xs dark:text-slate-400">Closed</p>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="bg-slate-800 border-slate-700">
-        <CardHeader className="pb-2 bg-red-900/50">
-          <CardTitle className="text-xs font-medium text-white text-center pt-4">
+      <Card className="dark:bg-slate-800 dark:border-slate-700">
+        <CardHeader className="pb-2 bg-red-600 dark:bg-red-900/50">
+          <CardTitle className="text-xs font-medium text-center pt-4">
             Priority (Unresolved)
           </CardTitle>
         </CardHeader>
@@ -86,7 +86,7 @@ function BadgePriority({ label, value }: BadgePriorityProps) {
   return (
     <Badge
       variant="secondary"
-      className={`bg-red-600 text-white hover:bg-red-600/90 flex flex-col items-center py-1 rounded-md h-12 w-16`}
+      className={`bg-red-500 hover:bg-red-500/90 dark:bg-red-60 dark:hover:bg-red-600/90 flex flex-col items-center py-1 rounded-md h-12 w-16`}
     >
       <span className="text-xs font-normal">{label}</span>
       <span className="text-md font-bold">{value}</span>

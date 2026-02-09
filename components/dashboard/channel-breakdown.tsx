@@ -57,30 +57,30 @@ export function ChannelBreakdown({
 }: ChannelColumnProps) {
   return (
     <div className="flex flex-col">
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="dark:bg-slate-800 dark:border-slate-700">
         <CardHeader className="flex flex-row items-center space-y-0 pb-0 -mt-2">
           {icon}
-          <CardTitle className="text-md font-bold text-white ml-2 leading-none">
+          <CardTitle className="text-md font-bold ml-2 leading-none">
             {title}
           </CardTitle>
         </CardHeader>
         <CardContent className="text-center px-4 pt-0 -mt-2 -mb-2">
         <div className="flex justify-between pb-4">
           <div>
-            <p className="text-xs text-slate-400 mb-1">SLA</p>
-            <div className="bg-green-900/50 text-green-500 font-bold rounded-full w-16 h-8 flex items-center justify-center text-sm border-2 border-green-500">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">SLA</p>
+            <div className="bg-green-100 text-green-700 border-green-500 dark:bg-green-900/50 dark:text-green-500 font-bold rounded-full w-16 h-8 flex items-center justify-center text-sm border-2 border-green-500">
               {sla}
             </div>
           </div>
           <div>
-            <p className="text-xs text-slate-400 mb-1">Open</p>
-            <div className="bg-red-900/50 text-red-500 font-bold rounded-full w-16 h-8 flex items-center justify-center text-sm border-2 border-red-500">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Open</p>
+            <div className="bg-red-100 text-red-700 border-red-500 dark:bg-red-900/50 dark:text-red-500 font-bold rounded-full w-16 h-8 flex items-center justify-center text-sm border-2 border-red-500">
               {open}
             </div>
           </div>
           <div>
-            <p className="text-xs text-slate-400 mb-1">Closed</p>
-            <div className="bg-blue-900/50 text-blue-500 font-bold rounded-full w-16 h-8 flex items-center justify-center text-sm border-2 border-blue-500">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Closed</p>
+            <div className="bg-blue-100 text-blue-700 border-blue-500 dark:bg-blue-900/50 dark:text-blue-500 font-bold rounded-full w-16 h-8 flex items-center justify-center text-sm border-2 border-blue-500">
               {closed}
             </div>
           </div>
@@ -88,27 +88,27 @@ export function ChannelBreakdown({
 
 
           {/* Dashed Divider */}
-          <div className="border-t-2 border-dashed border-gray-300" />
+          <div className="border-t-2 border-dashed dark:border-gray-300" />
 
           {/* MIDDLE ROW: Connectivity & Solution */}
           <div className="grid grid-cols-2 gap-4 pt-4">
             
             {/* Connectivity Column */}
             <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-slate-400">
+              <div className="flex items-center gap-2 dark:text-slate-400">
                 <Network className="h-4 w-4 text-sky-500" />
                 <span className="text-sm font-medium">Connectivity</span>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <p className="text-xs text-slate-400 mb-1">3H</p>
-                  <div className="bg-blue-900/50 text-blue-500 font-bold rounded-md w-14 h-8 flex items-center justify-center text-sm border-2 border-blue-500">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">3H</p>
+                  <div className="bg-blue-100 text-blue-700 border-blue-500 dark:bg-blue-900/50 dark:text-blue-500 font-bold rounded-md w-14 h-8 flex items-center justify-center text-sm border-2 border-blue-500">
                     {connOver3h}
                   </div>
                 </div>
                 <div>
-                  <p className="text-xs text-slate-400 mb-1">Open</p>
-                  <div className="bg-red-900/50 text-red-500 font-bold rounded-md w-14 h-8 flex items-center justify-center text-sm border-2 border-red-500">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Open</p>
+                  <div className="bg-red-100 text-red-700 border-red-500 dark:bg-red-900/50 dark:text-red-500 font-bold rounded-md w-14 h-8 flex items-center justify-center text-sm border-2 border-red-500">
                     {connOpen}
                   </div>
                 </div>
@@ -124,14 +124,14 @@ export function ChannelBreakdown({
             </div>
             <div className="grid grid-cols-2 gap-2">
                                   <div>
-            <p className="text-xs text-slate-400 mb-1">6H</p>
-                  <div className="bg-blue-900/50 text-blue-500 font-bold rounded-md w-14 h-8 flex items-center justify-center text-sm border-2 border-blue-500">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">6H</p>
+                  <div className="bg-blue-100 text-blue-700 border-blue-500 dark:bg-blue-900/50 dark:text-blue-500 font-bold rounded-md w-14 h-8 flex items-center justify-center text-sm border-2 border-blue-500">
               {solOver6h}
             </div>
           </div>
                     <div>
             <p className="text-xs text-slate-400 mb-1">Open</p>
-                  <div className="bg-red-900/50 text-red-500 font-bold rounded-md w-14 h-8 flex items-center justify-center text-sm border-2 border-red-500">
+                  <div className="bg-red-100 text-red-700 border-red-500 dark:bg-red-900/50 dark:text-red-500 font-bold rounded-md w-14 h-8 flex items-center justify-center text-sm border-2 border-red-500">
               {solOpen}
             </div>
           </div>

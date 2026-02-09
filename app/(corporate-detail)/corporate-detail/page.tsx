@@ -65,9 +65,9 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 p-4 text-slate-200 mt-12 md:mt-0">
+    <div className="min-h-screen dark:bg-slate-950 p-4 dark:text-slate-200 mt-12 md:mt-0">
       <div className="flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0 mb-6">
-        <h2 className="text-3xl font-bold tracking-tight text-white">
+        <h2 className="text-3xl font-bold tracking-tigh">
           Corporate Detail
         </h2>
         <div className="flex items-center space-x-2">

@@ -29,7 +29,7 @@ export default function UploadLayout({
     <div className="flex h-screen overflow-hidden">
       <Sidebar />
 
-      <main className="flex-1 overflow-y-auto bg-slate-950 p-4 dark:bg-black">
+      <main className="flex-1 overflow-y-auto p-4 dark:bg-slate-950">
           {children}
       </main>
     </div>

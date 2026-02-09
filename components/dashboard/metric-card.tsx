@@ -22,18 +22,16 @@ export function MetricCard({
   contentClassName,
 }: MetricCardProps) {
   return (
-    <Card className={cn("bg-slate-800 border-slate-700", className)}>
+    <Card className={cn("dark:bg-slate-800 dark:border-slate-700", className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 -m-2">
-        <CardTitle className="text-xs font-medium text-slate-300">
-          {title}
-        </CardTitle>
+        <CardTitle className="text-xs font-medium">{title}</CardTitle>
         {icon}
       </CardHeader>
       <CardContent className={contentClassName}>
-        <div className="text-2xl font-bold text-white -mt-4 mb-2">{value}</div>
+        <div className="text-2xl font-bold -mt-4 mb-2">{value}</div>
         {(subtitle || trend) && (
           <div>
-            <p className="text-xs text-slate-400 flex items-center">
+            <p className="text-xs text-secondary flex items-center">
               {trend && (
                 <span
                   className={cn(
@@ -53,7 +51,7 @@ export function MetricCard({
                 </span>
               )}
             </p>
-            <p className="text-xs text-slate-400 flex items-center">
+            <p className="text-xs dark:text-slate-400 flex items-center">
               {subtitle}
             </p>
           </div>

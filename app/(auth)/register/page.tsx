@@ -62,7 +62,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <Card>
+    <Card className="dark:bg-slate-900">
       <CardHeader>
         <CardTitle>Register</CardTitle>
         <CardDescription>Create a new user account.</CardDescription>

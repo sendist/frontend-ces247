@@ -26,6 +26,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { ModeToggle } from "../ui-mode-toggle";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -228,6 +229,7 @@ export function Sidebar() {
           </nav>
         </div>
 
+
         {/* Footer / Logout */}
         <div
           className={cn(
@@ -235,9 +237,14 @@ export function Sidebar() {
             isMobile && isCollapsed ? "hidden" : "block",
           )}
         >
+        <div className={cn("w-full flex mb-2", isCollapsed ? "justify-center" : "")}>
+                <ModeToggle />
+
+        </div>
           {isCollapsed && !isMobile ? (
             <Tooltip>
               <TooltipTrigger asChild>
+              
                 <Button
                   variant="ghost"
                   size="icon"

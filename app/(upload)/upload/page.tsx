@@ -200,13 +200,13 @@ export default function UploadPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-slate-950 mt-12 lg:mt-0 p-6 text-slate-200">
+    <div className="min-h-screen w-full dark:bg-slate-950 mt-12 lg:mt-0 p-6 dark:text-slate-200">
       <div className="mx-auto space-y-6">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight text-white">
+          <h2 className="text-3xl font-bold tracking-tight">
             Report Management
           </h2>
-          <p className="text-slate-400 mt-2">
+          <p className="dark:text-slate-400 mt-2">
             Upload and process system reports to the processing queue.
           </p>
         </div>
@@ -215,21 +215,21 @@ export default function UploadPage() {
           {REPORT_TYPES.map((report) => (
             <Card
               key={report.id}
-              className="bg-slate-900 border-slate-800 hover:border-slate-700 transition-colors"
+              className="dark:bg-slate-900 dark:border-slate-800 dark:hover:border-slate-700 transition-colors"
             >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <div className="space-y-1">
-                  <CardTitle className="text-xl font-semibold text-white">
+                  <CardTitle className="text-xl font-semibold">
                     {report.label}
                   </CardTitle>
-                  <CardDescription className="text-slate-400">
+                  <CardDescription className="dark:text-slate-400">
                     Expected format:{" "}
                     <span className="text-blue-400 font-mono">
                       {report.accept}
                     </span>
                   </CardDescription>
                 </div>
-                <div className="p-2 bg-slate-800 rounded-lg">
+                <div className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg">
                   {report.accept === ".csv" ? (
                     <FileText className="h-6 w-6 text-orange-500" />
                   ) : (
@@ -251,7 +251,7 @@ export default function UploadPage() {
                     <Button
                       asChild
                       variant="secondary"
-                      className="w-full bg-slate-800 hover:bg-slate-700 text-slate-100 cursor-pointer border-slate-700"
+                      className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-100 cursor-pointer dark:border-slate-700"
                       disabled={uploading !== null}
                     >
                       <div className="flex items-center justify-center gap-2">
@@ -276,9 +276,9 @@ export default function UploadPage() {
         </div>
 
         {/* Job Status Table */}
-        <Card className="bg-slate-900 border-slate-800 overflow-hidden">
-          <CardHeader className="border-b border-slate-800 bg-slate-900/50">
-            <CardTitle className="text-lg text-white flex items-center gap-2">
+        <Card className="dark:bg-slate-900 dark:border-slate-800 overflow-hidden">
+          <CardHeader className="border-b dark:border-slate-800 dark:bg-slate-900/50">
+            <CardTitle className="text-lg flex items-center gap-2">
               <Clock className="h-5 w-5 text-blue-400" />
               Processing Queue
             </CardTitle>
@@ -296,7 +296,7 @@ export default function UploadPage() {
                     className="p-4 flex items-center justify-between hover:bg-slate-800/30 transition-colors"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="p-2 bg-slate-950 rounded-md">
+                      <div className="p-2 bg-slate-100 dark:bg-slate-950 rounded-md">
                         {job.status === "active" && (
                           <Loader2 className="h-5 w-5 text-blue-500 animate-spin" />
                         )}
@@ -308,10 +308,10 @@ export default function UploadPage() {
                         )}
                       </div>
                       <div>
-                        <div className="text-sm font-medium text-white">
+                        <div className="text-sm font-medium">
                           {job.filename}
                         </div>
-                        <div className="text-xs text-slate-500">
+                        <div className="text-xs dark:text-slate-500">
                           {job.reportType} • ID: {job.jobId.slice(0, 8)}
                         </div>
                       </div>
@@ -345,9 +345,9 @@ export default function UploadPage() {
       </div>
       <div className="mt-4">
         {/* Manual Sync Control */}
-        <Card className="bg-slate-900 border-slate-800 p-4 flex flex-col sm:flex-row items-center gap-3">
+        <Card className="dark:bg-slate-900 dark:border-slate-800 p-4 flex flex-col sm:flex-row items-center gap-3">
           <div className="flex flex-col">
-            <span className="text-[10px] uppercase font-bold text-slate-500 mb-1 ml-1">
+            <span className="text-[10px] uppercase font-bold dark:text-slate-500 mb-1 ml-1">
               OCA Manual Report Sync Period
             </span>
             <div className="flex flex-col md:flex-row md:items-center gap-2">
