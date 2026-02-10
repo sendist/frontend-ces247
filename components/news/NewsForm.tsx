@@ -101,7 +101,8 @@ export function NewsForm({
       />
 
       {/* Editor Toolbar */}
-      <div className="flex gap-2 border p-2 rounded-md bg-muted">
+      <div className="flex flex-col md:flex-row rounded-md bg-muted border p-2">
+      <div className="flex gap-2">
         {/* Table Dimension Popover */}
         <Popover>
           <PopoverTrigger asChild>
@@ -162,9 +163,10 @@ export function NewsForm({
         >
           Add PDF
         </Button>
+        </div>
         {/* Add this inside your Editor Toolbar in NewsForm.tsx */}
         {isInTable && (
-          <div className="flex gap-1 border-l pl-2 ml-2">
+          <div className="flex md:gap-1 md:border-l md:ml-4">
             <Button
               variant="ghost"
               size="sm"

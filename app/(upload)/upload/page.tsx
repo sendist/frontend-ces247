@@ -284,7 +284,7 @@ export default function UploadPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="divide-y divide-slate-800">
+            <div className="divide-y divide-slate-100 dark:divide-slate-800">
               {activeJobs.length === 0 ? (
                 <div className="p-8 text-center text-slate-500 text-sm">
                   No recent uploads in this session.
