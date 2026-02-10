@@ -28,7 +28,7 @@ export function MetricCard({
         {icon}
       </CardHeader>
       <CardContent className={contentClassName}>
-        <div className="text-2xl font-bold -mt-4 mb-2">{value}</div>
+        <div className="text-2xl font-bold text-slate-900 dark:text-white -mt-4 mb-2">{value}</div>
         {(subtitle || trend) && (
           <div>
             <p className="text-xs text-secondary flex items-center">
