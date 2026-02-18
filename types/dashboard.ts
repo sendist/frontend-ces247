@@ -55,6 +55,10 @@ export interface ChannelData {
   solOpen: number;
   connOver3h: number;
   solOver6h: number;
+  connOpenOver3h: number;
+  solOpenOver6h: number;
+  connOpenNear3h: number;
+  solOpenNear6h: number;
   nonFcrCount: number;
   pctFcr: string;
   pctNonFcr: string;

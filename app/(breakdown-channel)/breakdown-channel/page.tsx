@@ -149,6 +149,10 @@ export default function DashboardPage() {
       solOpen: 0,
       connOver3h: 0,
       solOver6h: 0,
+      connOpenNear3h: 0,
+      solOpenNear6h: 0,
+      connOpenOver3h: 0,
+      solOpenOver6h: 0,
       pctFcr: "0",
       pctNonFcr: "0",
       pctPareto: "0",
@@ -188,6 +192,10 @@ export default function DashboardPage() {
                 solOpen={channel.solOpen}
                 connOver3h={channel.connOver3h}
                 solOver6h={channel.solOver6h}
+                connOpenNear3h={channel.connOpenNear3h}
+                solOpenNear6h={channel.solOpenNear6h}
+                connOpenOver3h={channel.connOpenOver3h}
+                solOpenOver6h={channel.solOpenOver6h}
                 pctFcr={channel.pctFcr}
                 pctNonFcr={channel.pctNonFcr}
                 pctPareto={channel.pctPareto}
