@@ -46,7 +46,7 @@ export default function RegisterPage() {
   // API Mutation
   const registerMutation = useMutation({
     mutationFn: async (data: RegisterFormValues) => {
-      return api.post("api/auth/register", data);
+      return api.post("auth/register", data);
     },
     onSuccess: () => {
       toast("Account created!", { description: "Please login with your new account." });

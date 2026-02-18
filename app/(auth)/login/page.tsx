@@ -52,7 +52,7 @@ export default function LoginPage() {
   // API Mutation
   const loginMutation = useMutation({
     mutationFn: async (data: LoginFormValues) => {
-      return api.post("api/auth/login", data);
+      return api.post("auth/login", data);
     },
     onSuccess: async () => {
       // Refresh the user state so the app knows we are logged in

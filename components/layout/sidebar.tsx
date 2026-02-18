@@ -46,7 +46,7 @@ export function Sidebar() {
   }, []);
 
   const logoutMutation = useMutation({
-    mutationFn: async () => api.post("api/auth/logout"),
+    mutationFn: async () => api.post("auth/logout"),
     onSuccess: () => {
       queryClient.clear();
       toast("Logged out");
