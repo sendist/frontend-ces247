@@ -142,12 +142,12 @@ export default function DashboardPage() {
     },
     {
       label: "Whatsapp",
-      matcher: (s: string) => s.includes("whatsapp") || s.includes("wa"),
+      matcher: (s: string) => s.includes("whatsapp") || s.includes("Whatsapp"),
     },
     {
       label: "Social Media",
       matcher: (s: string) =>
-        s.includes("social") || s.includes("instagram") || s.includes("ig"),
+        s.includes("Socmed") || s.includes("socmed") || s.includes("SOCMED"),
     },
     {
       label: "Live Chat",
@@ -185,9 +185,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-4 mt-12 md:mt-0">
       <div className="flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0 mb-6">
-        <h2 className="text-3xl font-bold tracking-tight">
-          Dashboard
-        </h2>
+        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
         <div className="flex flex-col w-full sm:w-auto space-y-2 sm:space-y-0 sm:flex-row sm:items-center sm:space-x-2">
           <div className="flex items-center space-x-2">
             {/* ACTION 1: DAILY TICKET SYNC (THE NEW BUTTON) */}

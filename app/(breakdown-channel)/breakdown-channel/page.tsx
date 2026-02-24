@@ -110,12 +110,12 @@ export default function DashboardPage() {
     },
     {
       label: "Whatsapp",
-      matcher: (s: string) => s.includes("whatsapp") || s.includes("wa"),
+      matcher: (s: string) => s.includes("whatsapp") || s.includes("Whatsapp"),
     },
     {
       label: "Social Media",
       matcher: (s: string) =>
-        s.includes("social") || s.includes("instagram") || s.includes("ig"),
+        s.includes("Socmed") || s.includes("socmed") || s.includes("SOCMED"),
     },
     {
       label: "Live Chat",

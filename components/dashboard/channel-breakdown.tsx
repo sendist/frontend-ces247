@@ -116,7 +116,7 @@ export function ChannelBreakdown({
                   <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">
                     Open
                   </p>
-                  <div className="bg-red-100 text-red-700 border-red-500 dark:bg-red-900/50 dark:text-red-500 font-bold rounded-md w-14 h-8 flex items-center justify-center text-sm border-2 border-red-500">
+                  <div className="bg-green-100 text-green-700 border-green-500 dark:bg-green-900/50 dark:text-green-500 font-bold rounded-md w-14 h-8 flex items-center justify-center text-sm border-2 border-green-500">
                     {connOpen}
                   </div>
                 </div>
@@ -124,7 +124,7 @@ export function ChannelBreakdown({
                   <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">
                     Open Near 3H
                   </p>
-                  <div className="bg-red-100 text-red-700 border-red-500 dark:bg-red-900/50 dark:text-red-500 font-bold rounded-md w-14 h-8 flex items-center justify-center text-sm border-2 border-red-500">
+                  <div className="bg-yellow-100 text-yellow-700 border-yellow-500 dark:bg-yellow-900/50 dark:text-yellow-500 font-bold rounded-md w-14 h-8 flex items-center justify-center text-sm border-2 border-yellow-500">
                     {connOpenNear3h}
                   </div>
                 </div>
@@ -158,7 +158,7 @@ export function ChannelBreakdown({
                   <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">
                     Open
                   </p>
-                  <div className="bg-red-100 text-red-700 border-red-500 dark:bg-red-900/50 dark:text-red-500 font-bold rounded-md w-14 h-8 flex items-center justify-center text-sm border-2 border-red-500">
+                  <div className="bg-green-100 text-green-700 border-green-500 dark:bg-green-900/50 dark:text-green-500 font-bold rounded-md w-14 h-8 flex items-center justify-center text-sm border-2 border-green-500">
                     {solOpen}
                   </div>
                 </div>
@@ -166,7 +166,7 @@ export function ChannelBreakdown({
                   <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">
                     Open Near 6H
                   </p>
-                  <div className="bg-red-100 text-red-700 border-red-500 dark:bg-red-900/50 dark:text-red-500 font-bold rounded-md w-14 h-8 flex items-center justify-center text-sm border-2 border-red-500">
+                  <div className="bg-yellow-100 text-yellow-700 border-yellow-500 dark:bg-yellow-900/50 dark:text-yellow-500 font-bold rounded-md w-14 h-8 flex items-center justify-center text-sm border-2 border-yellow-500">
                     {solOpenNear6h}
                   </div>
                 </div>
