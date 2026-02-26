@@ -218,8 +218,8 @@ const EBO_COLUMNS = [
   { key: "idTicket", label: "ID Ticket" },
   { key: "idCase", label: "ID Case" },
   { key: "duration", label: "Duration" },
-  { key: "act_name", label: "act_name" },
-  { key: "unit_id", label: "unit_id" },
+  { key: "actName", label: "act_name" },
+  { key: "unitId", label: "unit_id" },
 ];
 
 const BILLCO_COLUMNS = [

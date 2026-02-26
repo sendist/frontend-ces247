@@ -193,14 +193,19 @@ export function ProductCard({
                 <div className="text-sm font-bold">{connectivityData.open}</div>
               </div>
               <div className="bg-[#0B1750] text-white px-4 py-2 rounded-lg text-center min-w-[70px]">
-                <div className="text-[10px] font-bold">&gt;3H</div>
+                {product === "Connectivity" || product === "DAds" ? (
+                  <div className="text-[10px] font-bold">&gt;3H</div>
+                ) : (
+                  <div className="text-[10px] font-bold">&gt;6H</div>
+                )}
+
                 <div className="text-sm font-bold">
                   {connectivityData.over3h}
                 </div>
               </div>
             </div>
 
-            <div className="w-[150px]">
+            {/* <div className="w-[150px]">
               <Select defaultValue="product">
                 <SelectTrigger className="h-8 bg-gray-100 border-none">
                   <SelectValue placeholder="Product" />
@@ -209,7 +214,7 @@ export function ProductCard({
                   <SelectItem value="product">Product</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
           </div>
           <div className="h-[200px] w-full text-xs -mt-4">
             <ResponsiveContainer width="100%" height="100%">
