@@ -27,6 +27,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ModeToggle } from "../ui-mode-toggle";
+import Image from "next/image";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -155,7 +156,17 @@ export function Sidebar() {
                   : "w-auto opacity-100 ml-2",
               )}
             >
-              <h2 className="text-lg font-semibold tracking-tight">CES247</h2>
+            <div className="flex justify-start gap-1">
+                    <Image
+                      src="/ces247-3.svg"
+                      alt="Cesia logo"
+                      width={8}
+                      height={8}
+                      className="h-7 w-7 object-contain"
+                      priority
+                    />
+              <h2 className="text-lg font-semibold tracking-tight">CESIA</h2>
+                  </div>
             </div>
           </div>
 
