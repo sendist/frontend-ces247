@@ -62,7 +62,7 @@ const REPORT_TYPES = [
     id: "call",
     label: "Call Report",
     endpoint: "/upload/call-report",
-    accept: ".xlsx",
+    accept: ".csv",
   },
   {
     id: "oca",
