@@ -23,7 +23,7 @@ export function useAuth(requireAuth = false) {
     queryFn: async () => {
       try {
         // get current user route
-        const res = await api.get<User>("api/auth/me"); 
+        const res = await api.get<User>("auth/me"); 
         return res.data;
       } catch (err) {
         return null;
