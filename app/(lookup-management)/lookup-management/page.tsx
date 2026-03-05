@@ -193,7 +193,7 @@ function EditableTable<T extends { id: number }>({
       <div className="rounded-md border overflow-x-auto">
         <Table>
           <TableHeader>
-            <TableRow className="bg-muted/50">
+            <TableRow className="bg-muted/50 dark:bg-slate-950/50">
               <TableHead className="w-12 text-xs">#</TableHead>
               {columns.map((col) => (
                 <TableHead key={String(col.key)} className="text-xs whitespace-nowrap">
@@ -475,10 +475,10 @@ export default function LookupManagementPage() {
         <h1 className="text-xl font-semibold">Lookup Data Management</h1>
       </div>
 
-      <Card>
+      <Card className="dark:bg-slate-900">
         <CardContent className="pt-0">
           <Tabs defaultValue="account-mapping">
-            <TabsList className="mb-4">
+            <TabsList className="mb-4 dark:bg-slate-800">
               <TabsTrigger value="account-mapping">Account Mapping</TabsTrigger>
               <TabsTrigger value="lookup-kip">Lookup KIP</TabsTrigger>
               <TabsTrigger value="lookup-agent">Lookup Agent</TabsTrigger>
