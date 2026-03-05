@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Building2,
+  DatabaseZap,
   FileUp,
   LayoutDashboard,
   LogOut,
@@ -97,6 +98,12 @@ export function Sidebar() {
       href: "/news",
       icon: Newspaper,
       roles: ["USER", "ADMIN"],
+    },
+    {
+      title: "Lookup Management",
+      href: "/lookup-management",
+      icon: DatabaseZap,
+      roles: ["ADMIN"],
     },
   ];
 
