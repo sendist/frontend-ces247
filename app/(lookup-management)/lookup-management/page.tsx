@@ -41,6 +41,7 @@ import {
   type LookupKIPRow,
   type LookupAgentRow,
 } from "@/hooks/use-lookup-management";
+import api from "@/lib/api";
 
 // ─── Column definitions ───
 
@@ -86,17 +87,20 @@ const lookupAgentColumns: ColumnDef<LookupAgentRow>[] = [
 // ─── Generic Editable Table ───
 
 interface EditableTableProps<T extends { id: number }> {
+  table: string;
   columns: ColumnDef<T>[];
   hooks: {
     useList: (params: { page?: number; limit?: number; search?: string }) => any;
     useCreate: () => any;
     useUpdate: () => any;
     useDelete: () => any;
+    useDeleteAll: () => any;
   };
   defaultNewRow: Partial<T>;
 }
 
 function EditableTable<T extends { id: number }>({
+  table,
   columns,
   hooks,
   defaultNewRow,
@@ -115,7 +119,7 @@ function EditableTable<T extends { id: number }>({
   const createMutation = hooks.useCreate();
   const updateMutation = hooks.useUpdate();
   const deleteMutation = hooks.useDelete();
-
+  const deleteAllMutation = hooks.useDeleteAll();
   const handleSearch = useCallback(() => {
     setSearch(searchInput);
     setPage(1);
@@ -164,6 +168,50 @@ function EditableTable<T extends { id: number }>({
     }
   };
 
+  const handleDeleteAll = async () => {
+    if (!confirm("Are you sure you want to delete all rows? This action cannot be undone.")) {
+      return;
+    }
+    try {
+      await deleteAllMutation.mutateAsync();
+      toast.success("All rows deleted successfully");
+    } catch {
+      toast.error("Failed to delete all rows");
+    }
+  }
+
+  const handleFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Client-side validation
+    const fileExtension = file.name.split(".").pop()?.toLowerCase();
+    const expectedExtension = 'csv';
+
+    if (fileExtension !== expectedExtension) {
+      toast.error(`Invalid format. Please upload a .csv file.`);
+      event.target.value = ""; // Reset input
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await api.post(`lookup-management/${table}/upload-csv`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      toast.info("Upload finished. Processing started...");
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Failed to upload file.");
+    } finally {
+      event.target.value = ""; // Reset input
+    }
+  };
+
   const rows: T[] = result?.data ?? [];
   const meta = result?.meta ?? { total: 0, page: 1, lastPage: 1 };
 
@@ -183,10 +231,32 @@ function EditableTable<T extends { id: number }>({
             <Search className="h-4 w-4" />
           </Button>
         </div>
-        <Button onClick={() => setIsAddDialogOpen(true)} size="sm">
-          <Plus className="h-4 w-4 mr-1" />
-          Add Row
-        </Button>
+        <div className="flex gap-x-2">
+          <Button variant="destructive" size="sm" onClick={handleDeleteAll}>
+            <Trash2 className="h-4 w-4 mr-1" />
+            Delete All
+          </Button>
+
+          <input
+            type="file"
+            accept=".csv"
+            className="hidden"
+            id={`file-lookup`}
+            onChange={(e) => handleFileUpload(e)}
+          />
+          <label htmlFor={`file-lookup`}>
+            <Button asChild size="sm">
+              <div>
+                <Plus className="h-4 w-4 mr-1" />
+                Bulk Add
+              </div>
+            </Button>
+          </label>
+          <Button onClick={() => setIsAddDialogOpen(true)} size="sm">
+            <Plus className="h-4 w-4 mr-1" />
+            Add Row
+          </Button>
+        </div>
       </div>
 
       {/* Table */}
@@ -486,6 +556,7 @@ export default function LookupManagementPage() {
 
             <TabsContent value="account-mapping">
               <EditableTable<AccountMappingRow>
+                table="account-mapping"
                 columns={accountMappingColumns}
                 hooks={accountMappingHooks}
                 defaultNewRow={{ b2b_account_id: "" }}
@@ -494,6 +565,7 @@ export default function LookupManagementPage() {
 
             <TabsContent value="lookup-kip">
               <EditableTable<LookupKIPRow>
+                table="lookup-kip"
                 columns={lookupKIPColumns}
                 hooks={lookupKIPHooks}
                 defaultNewRow={{}}
@@ -502,6 +574,7 @@ export default function LookupManagementPage() {
 
             <TabsContent value="lookup-agent">
               <EditableTable<LookupAgentRow>
+                table="lookup-agent"
                 columns={lookupAgentColumns}
                 hooks={lookupAgentHooks}
                 defaultNewRow={{}}

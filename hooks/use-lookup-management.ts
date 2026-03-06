@@ -59,7 +59,18 @@ function createLookupHooks<T extends { id: number }>(endpoint: string, qKey: str
     });
   };
 
-  return { useList, useCreate, useUpdate, useDelete };
+  const useDeleteAll = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationFn: async () => {
+        const { data } = await api.delete(endpoint);
+        return data;
+      },
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: [qKey] }),
+    });
+  }
+
+  return { useList, useCreate, useUpdate, useDelete, useDeleteAll };
 }
 
 // ─── Concrete hooks ───
