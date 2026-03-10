@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Building2,
   DatabaseZap,
+  Download,
   FileUp,
   LayoutDashboard,
   LogOut,
@@ -85,6 +86,12 @@ export function Sidebar() {
       title: "Upload Report",
       href: "/upload",
       icon: FileUp,
+      roles: ["ADMIN"],
+    },
+    {
+      title: "Download Raw Data",
+      href: "/download",
+      icon: Download,
       roles: ["ADMIN"],
     },
     {
