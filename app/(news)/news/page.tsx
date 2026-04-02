@@ -129,7 +129,7 @@ export default function NewsPage({ isAdmin }: { isAdmin: boolean }) {
   const router = useRouter();
 
   return (
-    <div className="p-6 space-y-6 mt-12 md:mt-0">
+    <div className="p-10 space-y-6 mt-12 md:mt-0">
       <div className="flex flex-col md:flex-row justify-between md:items-center">
         <h1 className="text-3xl font-bold">Latest News</h1>
 

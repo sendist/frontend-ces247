@@ -37,6 +37,9 @@ export function proxy(request: NextRequest) {
     font-src 'self';
     connect-src 'self' ${process.env.NEST_PUBLIC_API_URL} ${process.env.NEXT_PUBLIC_API_URL};
     frame-src 'self' ${process.env.NEST_PUBLIC_API_URL} ${process.env.NEXT_PUBLIC_API_URL};
+
+    frame-ancestors 'self';
+
     base-uri 'self';
     form-action 'self';
   `

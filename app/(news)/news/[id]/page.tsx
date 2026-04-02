@@ -15,21 +15,23 @@ export default function NewsDetailPage() {
   if (!article) return <div>Article not found.</div>;
 
   return (
-    <div className="container mx-auto py-10 max-w-4xl mt-8 md:mt-0">
-      <ArrowLeft
-        className="mb-4 cursor-pointer"
-        onClick={() => window.history.back()}
-      />
-      <header className="mb-8 space-y-4">
-        <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
-          {article.title}
-        </h1>
-        <div className="flex items-center text-muted-foreground gap-4 border-b pb-4">
-          <p className="font-medium">By {article.authorName}</p>
-          <span>•</span>
-          <p>{format(new Date(article.createdAt), "MMMM d, yyyy HH:mm")}</p>
-        </div>
-      </header>
+    <div className="container mx-auto max-w-4xl px-4 lg:px-0 md:p-4 mt-8 md:mt-0">
+      <div className="sticky top-16 pt-4  md:top-0 bg-slate-50 mt-6 dark:bg-slate-950 z-100 mb-12 md:mb-6">
+        <ArrowLeft
+          className="mb-4 cursor-pointer"
+          onClick={() => window.history.back()}
+        />
+        <header className="mb- space-y-4">
+          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
+            {article.title}
+          </h1>
+          <div className="flex items-center text-muted-foreground gap-4 border-b pb-4">
+            <p className="font-medium">By {article.authorName}</p>
+            <span>•</span>
+            <p>{format(new Date(article.createdAt), "MMMM d, yyyy HH:mm")}</p>
+          </div>
+        </header>
+      </div>
 
       {/* This is where the rich content (tables, images, text) is rendered */}
       <NewsRenderer content={article.content} />

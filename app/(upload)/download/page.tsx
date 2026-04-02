@@ -57,11 +57,6 @@ export default function DownloadPage() {
   };
 
   const triggerDownload = async (item: (typeof DOWNLOAD_TYPES)[0]) => {
-    if (!normalizedDateRange) {
-      toast.error("Please select a date range before downloading.");
-      return;
-    }
-
     setDownloading(item.id);
     updateHistory({ id: item.id, label: item.label, status: "downloading" });
 
@@ -120,7 +115,7 @@ export default function DownloadPage() {
 
         <Card className="dark:bg-slate-900 dark:border-slate-800">
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Date Filter</CardTitle>
+            <CardTitle className="text-base">Date Filter (Optional)</CardTitle>
             <CardDescription className="dark:text-slate-400">
               Select a date range to download only records in that period.
             </CardDescription>
